@@ -19,8 +19,6 @@ public static class InfrastructureExtensions
             .AddDefaultTokenProviders();
         services.AddScoped<IUserRepository, UserRepository>();
         
-        services.AddAuthorization();
-        services.AddAuthentication();
         return services;
     }
 }

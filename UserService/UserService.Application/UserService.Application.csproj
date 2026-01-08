@@ -9,6 +9,7 @@
     <ItemGroup>
       <Folder Include="Mediator\CommandHandler\" />
       <Folder Include="Mediator\QueryHandler\" />
+      <Folder Include="Models\" />
     </ItemGroup>
 
     <ItemGroup>
