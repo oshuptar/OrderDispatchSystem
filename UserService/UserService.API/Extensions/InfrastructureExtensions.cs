@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserService.Application.Repositories.Interfaces;
+using UserService.Domain.Entities;
 using UserService.Infrastructure.Persistence;
 using UserService.Infrastructure.Repositories;
 
@@ -11,8 +13,14 @@ public static class InfrastructureExtensions
     {
         services.AddDbContext<UserDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("UserDb")));
+        services.AddIdentityApiEndpoints<User>()
+            .AddRoles<Role>()
+            .AddEntityFrameworkStores<UserDbContext>()
+            .AddDefaultTokenProviders();
         services.AddScoped<IUserRepository, UserRepository>();
         
+        services.AddAuthorization();
+        services.AddAuthentication();
         return services;
     }
 }
