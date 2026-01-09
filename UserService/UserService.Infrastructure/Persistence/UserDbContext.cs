@@ -6,7 +6,7 @@ using UserService.Domain.Entities;
 namespace UserService.Infrastructure.Persistence;
 
 public sealed class UserDbContext(DbContextOptions<UserDbContext> options) 
-    : IdentityDbContext<User, Role, int>(options)
+    : IdentityDbContext<User, Role, Guid>(options)
 {
     public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
 
