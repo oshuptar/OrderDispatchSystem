@@ -10,25 +10,4 @@ public static class ApplicationExtensions
     {
         return services;
     }
-
-    public static IServiceCollection ConfigureIdentity(this IServiceCollection services)
-    {
-        services.Configure<IdentityOptions>(options =>
-        {
-            // options.Password.RequireDigit = true;
-            // options.Password.RequireLowercase = true;
-            // options.Password.RequireNonAlphanumeric = true;
-            // options.Password.RequireUppercase = true;
-            // options.Password.RequiredLength = 10;
-            //
-            // options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            // options.Lockout.MaxFailedAccessAttempts = 5;
-            // options.Lockout.AllowedForNewUsers = true;
-            //
-            // options.User.RequireUniqueEmail = true;
-            //
-            // options.SignIn.RequireConfirmedEmail = true;
-        });
-        return services;
-    }
 }
