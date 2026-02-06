@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using UserService.Application.Repositories.Interfaces;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Persistence;
+using UserService.Infrastructure.Repositories;
 
 namespace UserService.Extensions;
 
@@ -14,7 +16,8 @@ public static class InfrastructureExtensions
         services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<UserDbContext>()
             .AddDefaultTokenProviders();
-        
+
+        services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         return services;
     }
 }
