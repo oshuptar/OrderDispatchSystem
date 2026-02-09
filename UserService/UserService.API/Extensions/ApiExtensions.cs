@@ -30,7 +30,8 @@ public static class ApiExtensions
             [FromBody] UserLoginRequestDto dto,
             CancellationToken cancellationToken) =>
         {
-            await mediator.ExecuteCommandAsync(dto, cancellationToken);
+            var res = await mediator.ExecuteCommandAsync<UserLoginRequestDto, UserLoginResponseDto>(dto, cancellationToken);
+            return Results.Ok(res);
         });
         
         return app;

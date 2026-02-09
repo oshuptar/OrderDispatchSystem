@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Scalar.AspNetCore;
 using UserService.Domain.Entities;
@@ -9,10 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddOptions(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddUserServices();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication();
 
 var app = builder.Build();
 

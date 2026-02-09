@@ -30,7 +30,6 @@ public class UserRegisterCommandHandler(UserManager<User> userManager,
             var result = await userManager.CreateAsync(user, command.Password);
             if (!result.Succeeded)
             {
-                await unitOfWork.RollbackTransactionAsync(transaction, cancellationToken);
                 String errors = String.Join(separator: ", ", result.Errors.Select(e => e.Description));
                 logger.LogError(errors);
 
