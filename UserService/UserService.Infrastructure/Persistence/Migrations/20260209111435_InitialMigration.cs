@@ -13,17 +13,17 @@ namespace UserService.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AspNetRoles",
+                name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -31,9 +31,9 @@ namespace UserService.Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: true),
@@ -65,9 +65,9 @@ namespace UserService.Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        name: "FK_AspNetRoleClaims_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -124,9 +124,9 @@ namespace UserService.Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        name: "FK_AspNetUserRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -183,12 +183,6 @@ namespace UserService.Infrastructure.Persistence.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles",
-                column: "NormalizedName",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
                 table: "AspNetUserClaims",
                 column: "UserId");
@@ -204,6 +198,12 @@ namespace UserService.Infrastructure.Persistence.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "Roles",
+                column: "NormalizedName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserProfiles_UserId",
                 table: "UserProfiles",
                 column: "UserId",
@@ -213,6 +213,12 @@ namespace UserService.Infrastructure.Persistence.Migrations
                 name: "EmailIndex",
                 table: "Users",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -243,7 +249,7 @@ namespace UserService.Infrastructure.Persistence.Migrations
                 name: "UserProfiles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");

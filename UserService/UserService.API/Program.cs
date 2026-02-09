@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Scalar.AspNetCore;
+using UserService;
 using UserService.Domain.Entities;
 using UserService.Extensions;
 using UserService.Infrastructure.Persistence;
@@ -18,6 +19,10 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+// Used for seeding data
+using (var scope = app.Services.CreateScope()){
+    await DataSeeder.SeedAsync(scope.ServiceProvider);
+}
 app.AddMiddleware();
 app.MapEndpoints();
 

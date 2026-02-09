@@ -12,7 +12,7 @@ using UserService.Infrastructure.Persistence;
 namespace UserService.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20260206124521_InitialMigration")]
+    [Migration("20260209111435_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -139,6 +139,7 @@ namespace UserService.Infrastructure.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -152,7 +153,7 @@ namespace UserService.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("UserService.Domain.Entities.User", b =>
@@ -169,6 +170,7 @@ namespace UserService.Infrastructure.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -205,10 +207,14 @@ namespace UserService.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");

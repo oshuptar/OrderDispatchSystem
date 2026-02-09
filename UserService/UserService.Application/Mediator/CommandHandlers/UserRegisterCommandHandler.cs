@@ -6,14 +6,16 @@ using UserService.Application.Models.Mappers;
 using UserService.Application.Models.Response;
 using UserService.Application.Repositories.Interfaces;
 using UserService.Application.UnitOfWork.Interfaces;
+using UserService.Domain.Constants;
 using UserService.Domain.Entities;
 
 namespace UserService.Application.Mediator.CommandHandlers;
 
 public class UserRegisterCommandHandler(UserManager<User> userManager,
+                                        RoleManager<Role> roleManager,
                                         IUnitOfWork unitOfWork,
-                                        ILogger<UserRegisterCommandHandler> logger,
-                                        IUserProfileRepository userProfileRepository
+                                        IUserProfileRepository userProfileRepository,
+                                        ILogger<UserRegisterCommandHandler> logger
     ) : ICommandHandler<UserRegisterRequestDto, UserRegisterResponseDto>
 {
 
@@ -43,6 +45,8 @@ public class UserRegisterCommandHandler(UserManager<User> userManager,
             }
             profile.UserId = user.Id;
             user.UserProfile = profile;
+            // Registered users are customers by default, other users can be added by admin
+            await userManager.AddToRoleAsync(user, Roles.Customer);
             await userProfileRepository.CreateUserProfileAsync(profile, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             await unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
