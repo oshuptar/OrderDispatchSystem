@@ -1,22 +1,19 @@
 using Microsoft.AspNetCore.Identity;
-using UserService.Application.Exceptions;
-using UserService.Application.Interfaces;
+using UserService.Application.Abstractions.Authentication;
+using UserService.Application.Common.Exceptions;
+using UserService.Application.Features.Authentication.Login.Contracts;
 using UserService.Application.Mediator.Interfaces;
-using UserService.Application.Models;
-using UserService.Application.Models.Response;
 using UserService.Domain.Entities;
 
-namespace UserService.Application.Mediator.CommandHandlers;
+namespace UserService.Application.Features.Authentication.Login;
 
-// Imports signInManager. Should define an interface of service in Application and implementation in Infrastructure
-// to preserve Clean Architecture?
 public class UserLoginCommandHandler(
     SignInManager<User> signInManager,
     UserManager<User> userManager,
     ITokenService tokenService
-    ) : ICommandHandler<UserLoginRequestDto, UserLoginResponseDto>
+    ) : ICommandHandler<UserLoginRequest, UserLoginResponse>
 {
-    public async Task<UserLoginResponseDto> HandleCommandAsync(UserLoginRequestDto command, CancellationToken cancellationToken)
+    public async Task<UserLoginResponse> HandleCommandAsync(UserLoginRequest command, CancellationToken cancellationToken)
     {
         User? user = await userManager.FindByEmailAsync(command.Email);
         if (user is null) throw new UnauthorisedException();
@@ -29,8 +26,8 @@ public class UserLoginCommandHandler(
         var claims = await userManager.GetClaimsAsync(user);
         var roles = await userManager.GetRolesAsync(user);
         
-        var accessToken = tokenService.GenerateToken(user, await userManager.GetRolesAsync(user));
+        var accessToken = tokenService.GenerateToken(new GenerateTokenRequest(user, await userManager.GetRolesAsync(user)));
 
-        return new UserLoginResponseDto(accessToken);
+        return new UserLoginResponse(accessToken);
     }
 }

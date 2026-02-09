@@ -1,26 +1,24 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using UserService.Application.Abstractions.Persistence;
+using UserService.Application.Abstractions.Repositories;
+using UserService.Application.Common.Mappers;
+using UserService.Application.Features.Authentication.Register.Contracts;
 using UserService.Application.Mediator.Interfaces;
-using UserService.Application.Models;
-using UserService.Application.Models.Mappers;
-using UserService.Application.Models.Response;
-using UserService.Application.Repositories.Interfaces;
-using UserService.Application.UnitOfWork.Interfaces;
 using UserService.Domain.Constants;
 using UserService.Domain.Entities;
 
-namespace UserService.Application.Mediator.CommandHandlers;
+namespace UserService.Application.Features.Authentication.Register;
 
 public class UserRegisterCommandHandler(UserManager<User> userManager,
-                                        RoleManager<Role> roleManager,
                                         IUnitOfWork unitOfWork,
                                         IUserProfileRepository userProfileRepository,
                                         ILogger<UserRegisterCommandHandler> logger
-    ) : ICommandHandler<UserRegisterRequestDto, UserRegisterResponseDto>
+    ) : ICommandHandler<UserRegisterRequest, UserRegisterResponse>
 {
 
     // Creating user and profile is atomic
-    public async Task<UserRegisterResponseDto> HandleCommandAsync(UserRegisterRequestDto command,
+    public async Task<UserRegisterResponse> HandleCommandAsync(UserRegisterRequest command,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Registering user {Email}", command.Email);
@@ -35,7 +33,6 @@ public class UserRegisterCommandHandler(UserManager<User> userManager,
                 String errors = String.Join(separator: ", ", result.Errors.Select(e => e.Description));
                 logger.LogError(errors);
 
-                // Do I have to map errors to custom exceptions here?
                 if (result.Errors.Any(error =>
                         error.Code == nameof(IdentityErrorDescriber.ConcurrencyFailure)
                         || error.Code == nameof(IdentityErrorDescriber.DefaultError)))

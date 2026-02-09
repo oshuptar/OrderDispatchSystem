@@ -1,15 +1,13 @@
-using Microsoft.AspNetCore.Identity;
-using UserService.Application.Interfaces;
+using UserService.Application.Abstractions.Authentication;
+using UserService.Application.Abstractions.Persistence;
+using UserService.Application.Features.Authentication.Login;
+using UserService.Application.Features.Authentication.Login.Contracts;
+using UserService.Application.Features.Authentication.Register;
+using UserService.Application.Features.Authentication.Register.Contracts;
 using UserService.Application.Mediator;
-using UserService.Application.Mediator.CommandHandlers;
 using UserService.Application.Mediator.Interfaces;
-using UserService.Application.Models;
-using UserService.Application.Models.Response;
-using UserService.Application.UnitOfWork.Interfaces;
-using UserService.Domain.Entities;
-using UserService.Infrastructure.Persistence;
+using UserService.Infrastructure.Persistence.UnitOfWork;
 using UserService.Infrastructure.Services;
-using UserService.Infrastructure.UnitOfWork;
 
 namespace UserService.Extensions;
 
@@ -19,9 +17,9 @@ public static class ApplicationExtensions
     {
         services.AddScoped<IMediator, Mediator>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<ICommandHandler<UserRegisterRequestDto, UserRegisterResponseDto>,
+        services.AddScoped<ICommandHandler<UserRegisterRequest, UserRegisterResponse>,
             UserRegisterCommandHandler>();
-        services.AddScoped<ICommandHandler<UserLoginRequestDto, UserLoginResponseDto>,
+        services.AddScoped<ICommandHandler<UserLoginRequest, UserLoginResponse>,
             UserLoginCommandHandler>();
         services.AddScoped<ITokenService, JwtTokenService>();
         return services;

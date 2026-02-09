@@ -1,19 +1,18 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using UserService.Application.Interfaces;
-using UserService.Domain.Entities;
+using UserService.Application.Abstractions.Authentication;
 using UserService.Infrastructure.Options;
 
 namespace UserService.Infrastructure.Services;
 
 public class JwtTokenService(IOptions<JwtOptions> jwtOptions) : ITokenService
 {
-    public string GenerateToken(User user, IEnumerable<String> userRoles)
+    public string GenerateToken(GenerateTokenRequest request)
     {
+        var (user, userRoles) = request;
         var issuer = jwtOptions.Value.Issuer;
         var audience = jwtOptions.Value.Audience;
         var key = jwtOptions.Value.Key;

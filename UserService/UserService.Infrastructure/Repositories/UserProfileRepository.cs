@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using UserService.Application.Repositories.Interfaces;
+using UserService.Application.Abstractions.Repositories;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Persistence;
 

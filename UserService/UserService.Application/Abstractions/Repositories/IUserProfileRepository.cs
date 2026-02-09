@@ -1,6 +1,6 @@
 using UserService.Domain.Entities;
 
-namespace UserService.Application.Repositories.Interfaces;
+namespace UserService.Application.Abstractions.Repositories;
 
 public interface IUserProfileRepository
 {

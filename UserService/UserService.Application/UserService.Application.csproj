@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Mediator\QueryHandlers\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
@@ -27,6 +23,10 @@
       <Reference Include="Microsoft.EntityFrameworkCore">
         <HintPath>..\..\..\..\.nuget\packages\microsoft.entityframeworkcore\10.0.1\lib\net10.0\Microsoft.EntityFrameworkCore.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
     </ItemGroup>
 
 </Project>

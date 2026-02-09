@@ -1,9 +1,7 @@
-using System.Data;
 using Microsoft.EntityFrameworkCore.Storage;
-using UserService.Application.UnitOfWork.Interfaces;
-using UserService.Infrastructure.Persistence;
+using UserService.Application.Abstractions.Persistence;
 
-namespace UserService.Infrastructure.UnitOfWork;
+namespace UserService.Infrastructure.Persistence.UnitOfWork;
 
 public class UnitOfWork(UserDbContext userDbContext) : IUnitOfWork
 {

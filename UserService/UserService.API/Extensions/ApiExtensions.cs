@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
+using UserService.Application.Features.Authentication.Login.Contracts;
+using UserService.Application.Features.Authentication.Register.Contracts;
 using UserService.Application.Mediator.Interfaces;
-using UserService.Application.Models;
-using UserService.Application.Models.Response;
 
 namespace UserService.Extensions;
 
@@ -18,19 +18,19 @@ public static class ApiExtensions
         
         // /register:
         app.MapPost(PathResolver.Auth.Register, async ([FromServices] IMediator mediator,
-            [FromBody] UserRegisterRequestDto dto,
+            [FromBody] UserRegisterRequest command,
             CancellationToken cancellationToken) =>
         {
-            var res = await mediator.ExecuteCommandAsync<UserRegisterRequestDto, UserRegisterResponseDto>(dto, cancellationToken);
+            var res = await mediator.ExecuteCommandAsync<UserRegisterRequest, UserRegisterResponse>(command, cancellationToken);
             return Results.Ok(res);
         });
         
-        // /login
+        // /login:
         app.MapPost(PathResolver.Auth.Login, async ([FromServices] IMediator mediator,
-            [FromBody] UserLoginRequestDto dto,
+            [FromBody] UserLoginRequest command,
             CancellationToken cancellationToken) =>
         {
-            var res = await mediator.ExecuteCommandAsync<UserLoginRequestDto, UserLoginResponseDto>(dto, cancellationToken);
+            var res = await mediator.ExecuteCommandAsync<UserLoginRequest, UserLoginResponse>(command, cancellationToken);
             return Results.Ok(res);
         });
         
