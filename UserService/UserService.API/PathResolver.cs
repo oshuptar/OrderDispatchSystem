@@ -11,7 +11,7 @@ public class PathResolver
         public static String Login = Base + "/login";
     }
 
-public static class User
+public static class Users
     {
         public static String Base = Root +  "/users";
     }

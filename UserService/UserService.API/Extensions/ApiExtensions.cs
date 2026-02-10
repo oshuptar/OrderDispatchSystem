@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
+using UserService.Application.Features.Admin.Users.Contracts;
 using UserService.Application.Features.Authentication.Login.Contracts;
 using UserService.Application.Features.Authentication.Register.Contracts;
 using UserService.Application.Mediator.Interfaces;
+using UserService.Application.Models;
+using UserService.Domain.Entities;
 
 namespace UserService.Extensions;
 
@@ -31,6 +34,17 @@ public static class ApiExtensions
             CancellationToken cancellationToken) =>
         {
             var res = await mediator.ExecuteCommandAsync<UserLoginRequest, UserLoginResponse>(command, cancellationToken);
+            return Results.Ok(res);
+        });
+        
+        // 
+        app.MapGet(PathResolver.Users.Base + "/{id:guid}", async (
+            [FromRoute]Guid id,
+            [FromServices] IMediator mediator, 
+            CancellationToken cancellationToken
+        ) => {
+            var res = await mediator.ExecuteQueryAsync<UserGetByIdRequest, UserModel>(new UserGetByIdRequest(id),
+                cancellationToken);
             return Results.Ok(res);
         });
         

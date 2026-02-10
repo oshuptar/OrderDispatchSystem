@@ -22,6 +22,7 @@ public static class InfrastructureExtensions
             .AddDefaultTokenProviders();
 
         services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 
