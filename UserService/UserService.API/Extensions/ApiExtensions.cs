@@ -5,8 +5,8 @@ using UserService.Application.Features.Authentication.Login.Contracts;
 using UserService.Application.Features.Authentication.Register.Contracts;
 using UserService.Application.Mediator.Interfaces;
 using UserService.Application.Models;
-using UserService.Domain.Entities;
-
+using UserService.Domain.Constants;
+    
 namespace UserService.Extensions;
 
 public static class ApiExtensions
@@ -37,7 +37,6 @@ public static class ApiExtensions
             return Results.Ok(res);
         });
         
-        // 
         app.MapGet(PathResolver.Users.Base + "/{id:guid}", async (
             [FromRoute]Guid id,
             [FromServices] IMediator mediator, 
@@ -46,7 +45,7 @@ public static class ApiExtensions
             var res = await mediator.ExecuteQueryAsync<UserGetByIdRequest, UserModel>(new UserGetByIdRequest(id),
                 cancellationToken);
             return Results.Ok(res);
-        });
+        }).RequireAuthorization(builder => builder.RequireRole(Roles.Admin));
         
         return app;
     }
