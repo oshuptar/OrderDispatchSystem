@@ -43,11 +43,13 @@ public static class DataSeeder
          
         if (!await userManager.IsInRoleAsync(adminUser, Roles.Admin))
             await userManager.AddToRoleAsync(adminUser, Roles.Admin);
+        if (!await userManager.IsInRoleAsync(adminUser, Roles.SuperAdmin))
+            await userManager.AddToRoleAsync(adminUser, Roles.SuperAdmin);
     }
     
     private static async Task SeedRolesAsync(RoleManager<Role> roleManager)
     {
-        String[] roleNames = [Roles.Customer, Roles.Admin, Roles.Driver];
+        String[] roleNames = [Roles.Customer, Roles.Admin, Roles.Driver, Roles.SuperAdmin];
         foreach (var roleName in roleNames)
         {
             if(await roleManager.RoleExistsAsync(roleName)) continue;

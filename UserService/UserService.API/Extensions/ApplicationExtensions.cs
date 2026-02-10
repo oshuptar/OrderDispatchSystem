@@ -1,11 +1,15 @@
 using UserService.Application.Abstractions.Authentication;
 using UserService.Application.Abstractions.Persistence;
-using UserService.Application.Features.Admin.Users;
-using UserService.Application.Features.Admin.Users.Contracts;
+using UserService.Application.Features.Admin.Users.Get;
+using UserService.Application.Features.Admin.Users.Get.Contracts;
+using UserService.Application.Features.Admin.Users.Update;
+using UserService.Application.Features.Admin.Users.Update.Contracts;
 using UserService.Application.Features.Authentication.Login;
 using UserService.Application.Features.Authentication.Login.Contracts;
-using UserService.Application.Features.Authentication.Register;
-using UserService.Application.Features.Authentication.Register.Contracts;
+using UserService.Application.Features.Authentication.Register.Customer;
+using UserService.Application.Features.Authentication.Register.Customer.Contracts;
+using UserService.Application.Features.Authentication.Register.User;
+using UserService.Application.Features.Authentication.Register.User.Contracts;
 using UserService.Application.Mediator;
 using UserService.Application.Mediator.Interfaces;
 using UserService.Application.Models;
@@ -20,12 +24,15 @@ public static class ApplicationExtensions
     {
         services.AddScoped<IMediator, Mediator>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<ICommandHandler<UserRegisterRequest, UserRegisterResponse>,
+        services.AddScoped<ICommandHandler<CustomerRegisterRequest, CustomerRegisterResponse>,
+            CustomerRegisterCommandHandler>();
+        services.AddScoped<ICommandHandler<UserRegisterRequest, UserRegisterResponse>, 
             UserRegisterCommandHandler>();
         services.AddScoped<ICommandHandler<UserLoginRequest, UserLoginResponse>,
             UserLoginCommandHandler>();
         services.AddScoped<IQueryHandler<UserGetByIdRequest, UserModel>,
             UserGetByIdQueryHandler>();
+        services.AddScoped<ICommandHandler<UserAddToRoleRequest>, UserAddToRoleCommandHandler>();
         services.AddScoped<ITokenService, JwtTokenService>();
         return services;
     }

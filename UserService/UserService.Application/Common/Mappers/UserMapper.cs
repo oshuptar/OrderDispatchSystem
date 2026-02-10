@@ -1,4 +1,4 @@
-using UserService.Application.Features.Authentication.Register.Contracts;
+using UserService.Application.Features.Authentication.Register.User.Contracts;
 using UserService.Application.Models;
 using UserService.Domain.Entities;
 
@@ -9,13 +9,13 @@ public record UserModelContext(IEnumerable<String> Roles);
 public static class UserMapper
 {
     // In mappings:
-    public static User ToEntity(this UserRegisterRequest model)
+    public static User ToEntity(this UserRegisterRequest command)
     {
         return new User()
         {
-            Email = model.Email,
-            PhoneNumber = model.PhoneNumber,
-            UserName = model.Email
+            Email = command.Email,
+            PhoneNumber = command.PhoneNumber,
+            UserName = command.Email
         };
     }
     

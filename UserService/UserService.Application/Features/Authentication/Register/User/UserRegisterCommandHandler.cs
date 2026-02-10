@@ -3,29 +3,29 @@ using Microsoft.Extensions.Logging;
 using UserService.Application.Abstractions.Persistence;
 using UserService.Application.Abstractions.Repositories;
 using UserService.Application.Common.Mappers;
-using UserService.Application.Features.Authentication.Register.Contracts;
+using UserService.Application.Features.Admin.Users.Update.Contracts;
+using UserService.Application.Features.Authentication.Register.User.Contracts;
 using UserService.Application.Mediator.Interfaces;
-using UserService.Domain.Constants;
 using UserService.Domain.Entities;
 
-namespace UserService.Application.Features.Authentication.Register;
+namespace UserService.Application.Features.Authentication.Register.User;
 
-public class UserRegisterCommandHandler(UserManager<User> userManager,
-                                        IUnitOfWork unitOfWork,
-                                        IUserProfileRepository userProfileRepository,
-                                        ILogger<UserRegisterCommandHandler> logger
+public class UserRegisterCommandHandler(
+    UserManager<Domain.Entities.User> userManager,
+    IUserProfileRepository userProfileRepository,
+    ICommandHandler<UserAddToRoleRequest> addToRoleHandler,
+    IUnitOfWork unitOfWork,
+    ILogger<UserRegisterCommandHandler> logger
     ) : ICommandHandler<UserRegisterRequest, UserRegisterResponse>
 {
-
-    // Creating user and profile is atomic
-    public async Task<UserRegisterResponse> HandleCommandAsync(UserRegisterRequest command,
-        CancellationToken cancellationToken)
+    // Creating user, profile and assigning role is atomic
+    public async Task<UserRegisterResponse> HandleCommandAsync(UserRegisterRequest command, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Registering user {Email}", command.Email);
+        logger.LogInformation("Creating user {Email}", command.Email);
         var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            User user = UserMapper.ToEntity(command);
+            Domain.Entities.User user = UserMapper.ToEntity(command);
             UserProfile profile = UserProfileMapper.ToEntity(command);
             var result = await userManager.CreateAsync(user, command.Password);
             if (!result.Succeeded)
@@ -36,29 +36,28 @@ public class UserRegisterCommandHandler(UserManager<User> userManager,
                 if (result.Errors.Any(error =>
                         error.Code == nameof(IdentityErrorDescriber.ConcurrencyFailure)
                         || error.Code == nameof(IdentityErrorDescriber.DefaultError)))
-                    throw new Exception("An error occured while registering user");
+                    throw new Exception("An error occured while creating user");
 
-                throw new Exception($"An error occured while registering user: ${errors}");
+                throw new Exception($"An error occured while creating user: ${errors}");
             }
             profile.UserId = user.Id;
             user.UserProfile = profile;
-            // Registered users are customers by default, other users can be added by admin
-            await userManager.AddToRoleAsync(user, Roles.Customer);
+            await addToRoleHandler.HandleCommandAsync(new UserAddToRoleRequest(user.Id, command.Role), cancellationToken);
             await userProfileRepository.CreateUserProfileAsync(profile, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             await unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
-            logger.LogInformation("Registering user {Email} succeeded", command.Email);
+            logger.LogInformation("Creating user {Email} succeeded", command.Email);
             return user.ToResponse();
         }
         catch (OperationCanceledException)
         {
-            logger.LogInformation("Registering user {Email} cancelled", command.Email);
+            logger.LogInformation("Creating user {Email} cancelled", command.Email);
             await unitOfWork.RollbackTransactionAsync(transaction, CancellationToken.None);
             throw;
         }
         catch (Exception ex)
         {
-            logger.LogError("Registering user {Email} failed: {message}", command.Email, ex.Message);
+            logger.LogError("Creating user {Email} failed: {message}", command.Email, ex.Message);
             await unitOfWork.RollbackTransactionAsync(transaction, cancellationToken);
             throw;
         }

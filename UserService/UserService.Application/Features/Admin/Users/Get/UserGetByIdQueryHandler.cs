@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using UserService.Application.Abstractions.Repositories;
 using UserService.Application.Common.Exceptions;
 using UserService.Application.Common.Mappers;
-using UserService.Application.Features.Admin.Users.Contracts;
+using UserService.Application.Features.Admin.Users.Get.Contracts;
 using UserService.Application.Mediator.Interfaces;
 using UserService.Application.Models;
 using UserService.Domain.Entities;
 
-namespace UserService.Application.Features.Admin.Users;
+namespace UserService.Application.Features.Admin.Users.Get;
 
 public class UserGetByIdQueryHandler(
     IUserRepository userRepository,
