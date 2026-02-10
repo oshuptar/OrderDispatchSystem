@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using UserService.Application.Abstractions.Repositories;
 using UserService.Application.Common.Exceptions;
 using UserService.Application.Common.Mappers;
@@ -18,23 +17,9 @@ public class UserSearchByQueryHandler(
             throw new BadRequestException("Page must be positive");
         if(command.Size <= 0)
             throw new BadRequestException("Size must be positive");
-
-        IQueryable<User> users = command.Role is not null && command.Role != String.Empty
-                ? userRepository.GetUsersInRole(command.Role)
-                : userRepository.GetAllUsers();
-
-        users = users.Where(user =>
-            command.Email == null || user.Email == command.Email);
-
-        int totalCount = await users.CountAsync(cancellationToken);
-        IReadOnlyCollection<User> res = await users
-            .Include(user => user.UserProfile)
-            .AsNoTracking()
-            .OrderBy(u => u.Id)
-            .Skip((command.Page - 1) * command.Size)
-            .Take(command.Size)
-            .ToListAsync(cancellationToken);
-
+        
+        int totalCount = await userRepository.GetUsersByCountAsync(command, cancellationToken);
+        IReadOnlyCollection<User> res = await userRepository.GetUsersBy(command, cancellationToken);
         return new UserSearchResponse(res.ToUserModelList(), totalCount);
     }
 }

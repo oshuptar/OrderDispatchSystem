@@ -1,6 +1,6 @@
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using UserService.Application.Abstractions.Repositories;
+using UserService.Application.Features.Admin.Users.Get.Contracts;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Persistence;
 
@@ -10,12 +10,15 @@ public class UserRepository(
     UserDbContext userDbContext
     ) : IUserRepository
 {
-    public IQueryable<User> GetUserByIdAsync(Guid userId) => userDbContext.Users.Where(user => user.Id == userId);
-    
-    // Better than userManager.getInRoleAsync, since it returns IQueryable
-    public IQueryable<User> GetUsersInRole(String role)
+    public async Task<User?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
     {
-        return userDbContext.Users
+        return await userDbContext.Users.Include(user => user.UserProfile)
+            .FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<User>> GetUsersBy(UserSearchRequest searchRequest, CancellationToken cancellationToken)
+    {
+        return await userDbContext.Users
             .Join(userDbContext.UserRoles,
                 user  => user.Id,
                 roles => roles.UserId,
@@ -26,11 +29,39 @@ public class UserRepository(
                 roles => roles.Id,
                 (userRoles, roles) => new { User = userRoles.User, RoleName = roles.NormalizedName }
             )
-            .Where(res => res.RoleName == role.ToUpper())
+            .Where(res => searchRequest.Role == null 
+                          || res.RoleName == searchRequest.Role.ToUpper())
+            .Where(res => searchRequest.Email == null 
+                          || res.User.Email == searchRequest.Email)
             .Select(res => res.User)
             .Distinct()
-            .OrderBy(u => u.Id);
+            .OrderBy(u => u.Id)
+            .Skip((searchRequest.Page - 1) * searchRequest.Size)
+            .Take(searchRequest.Size)
+            .Include(user => user.UserProfile)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
     }
 
-    public IQueryable<User> GetAllUsers() => userDbContext.Users;
+    public async Task<int> GetUsersByCountAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken)
+    {
+        return await userDbContext.Users
+            .Join(userDbContext.UserRoles,
+                user => user.Id,
+                roles => roles.UserId,
+                (user, roles) => new { User = user, Roles = roles }
+            )
+            .Join(userDbContext.Roles,
+                userRoles => userRoles.Roles.RoleId,
+                roles => roles.Id,
+                (userRoles, roles) => new { User = userRoles.User, RoleName = roles.NormalizedName }
+            )
+            .Where(res => searchRequest.Role == null
+                          || res.RoleName == searchRequest.Role.ToUpper())
+            .Where(res => searchRequest.Email == null
+                          || res.User.Email == searchRequest.Email)
+            .Select(res => res.User)
+            .Distinct()
+            .CountAsync(cancellationToken);
+    }
 }

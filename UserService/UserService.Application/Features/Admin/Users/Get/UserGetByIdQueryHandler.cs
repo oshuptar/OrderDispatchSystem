@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using UserService.Application.Abstractions.Repositories;
 using UserService.Application.Common.Exceptions;
 using UserService.Application.Common.Mappers;
@@ -17,9 +16,7 @@ public class UserGetByIdQueryHandler(
 {
     public async Task<UserDetailsModel> HandleQueryAsync(UserGetByIdRequest command, CancellationToken cancellationToken)
     {
-        User? user = await userRepository.GetUserByIdAsync(command.Id)
-            .Include(user => user.UserProfile)
-            .FirstOrDefaultAsync(cancellationToken);
+        User? user = await userRepository.GetUserByIdAsync(command.Id, cancellationToken);
         if (user is null) throw new NotFoundException("User with id " + command.Id + " not found");
         var roles = await userManager.GetRolesAsync(user);
         return user.ToUserDetailsModel(new UserModelContext(roles));

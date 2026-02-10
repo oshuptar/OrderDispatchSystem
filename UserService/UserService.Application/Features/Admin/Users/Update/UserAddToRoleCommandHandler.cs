@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UserService.Application.Abstractions.Repositories;
 using UserService.Application.Common.Exceptions;
@@ -17,7 +16,7 @@ public class UserAddToRoleCommandHandler(
 {
     public async Task HandleCommandAsync(UserAddToRoleRequest command, CancellationToken cancellationToken)
     {
-        User? user = await userRepository.GetUserByIdAsync(command.Id).FirstOrDefaultAsync(cancellationToken);
+        User? user = await userRepository.GetUserByIdAsync(command.Id, cancellationToken);
         if(user is null) throw new NotFoundException("User with id " + command.Id + " not found");
         var res = await userManager.AddToRoleAsync(user, command.Role);
         if(res.Succeeded)
