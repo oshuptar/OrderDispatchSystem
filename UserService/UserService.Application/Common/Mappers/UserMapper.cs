@@ -26,13 +26,26 @@ public static class UserMapper
         return new UserRegisterResponse(user.Id);
     }
 
-    public static UserModel ToUserModel(this User user, UserModelContext context)
+    public static UserDetailsModel ToUserDetailsModel(this User user, UserModelContext context)
     {
-        return new UserModel(user.Id,
+        return new UserDetailsModel(user.Id,
             user.Email!,
             user.UserProfile!.FirstName,
             user.UserProfile!.LastName,
             user.PhoneNumber ?? string.Empty,
             context.Roles);
+    }
+
+    public static UserModel ToUserModel(this User user)
+    {
+        return new UserModel(user.Id,
+            user.Email!,
+            user.UserProfile!.FirstName,
+            user.UserProfile!.LastName);
+    }
+
+    public static IEnumerable<UserModel> ToUserModelList(this IEnumerable<User> users)
+    {
+        return users.Select(user => user.ToUserModel());
     }
 }

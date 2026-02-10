@@ -30,9 +30,11 @@ public static class ApplicationExtensions
             UserRegisterCommandHandler>();
         services.AddScoped<ICommandHandler<UserLoginRequest, UserLoginResponse>,
             UserLoginCommandHandler>();
-        services.AddScoped<IQueryHandler<UserGetByIdRequest, UserModel>,
-            UserGetByIdQueryHandler>();
         services.AddScoped<ICommandHandler<UserAddToRoleRequest>, UserAddToRoleCommandHandler>();
+        services.AddScoped <IQueryHandler<UserGetByIdRequest, UserDetailsModel>,
+            UserGetByIdQueryHandler>();
+        services.AddScoped<IQueryHandler<UserSearchRequest, UserSearchResponse>,
+            UserSearchByQueryHandler>();
         services.AddScoped<ITokenService, JwtTokenService>();
         return services;
     }

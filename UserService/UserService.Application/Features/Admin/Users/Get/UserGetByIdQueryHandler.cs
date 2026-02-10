@@ -13,15 +13,15 @@ namespace UserService.Application.Features.Admin.Users.Get;
 public class UserGetByIdQueryHandler(
     IUserRepository userRepository,
     UserManager<User> userManager
-    ) : IQueryHandler<UserGetByIdRequest, UserModel>
+    ) : IQueryHandler<UserGetByIdRequest, UserDetailsModel>
 {
-    public async Task<UserModel> HandleQueryAsync(UserGetByIdRequest command, CancellationToken cancellationToken)
+    public async Task<UserDetailsModel> HandleQueryAsync(UserGetByIdRequest command, CancellationToken cancellationToken)
     {
         User? user = await userRepository.GetUserByIdAsync(command.Id)
             .Include(user => user.UserProfile)
             .FirstOrDefaultAsync(cancellationToken);
         if (user is null) throw new NotFoundException("User with id " + command.Id + " not found");
         var roles = await userManager.GetRolesAsync(user);
-        return user.ToUserModel(new UserModelContext(roles));
+        return user.ToUserDetailsModel(new UserModelContext(roles));
     }
 }

@@ -38,7 +38,7 @@ public static class ApiExtensions
         {
             var res = await mediator.ExecuteCommandAsync<UserRegisterRequest, UserRegisterResponse>(command, cancellationToken);
             return Results.Ok(res);
-        }).RequireAuthorization(builder => builder.RequireRole([Roles.Admin]));
+        }).RequireAuthorization(builder => builder.RequireRole([Roles.Admin, Roles.SuperAdmin]));
         
         // login:
         app.MapPost(PathResolver.Auth.Login, async (
@@ -57,9 +57,19 @@ public static class ApiExtensions
             CancellationToken cancellationToken
         ) => {
             var query = new UserGetByIdRequest(id);
-            var res = await mediator.ExecuteQueryAsync<UserGetByIdRequest, UserModel>(
+            var res = await mediator.ExecuteQueryAsync<UserGetByIdRequest, UserDetailsModel>(
                 query,
                 cancellationToken);
+            return Results.Ok(res);
+        }).RequireAuthorization(builder => builder.RequireRole([Roles.Admin, Roles.SuperAdmin]));
+        
+        // search users by params
+        app.MapGet(PathResolver.Users.Base, async (
+            [AsParameters] UserSearchRequest query,
+            [FromServices] IMediator mediator,
+            CancellationToken cancellationToken) =>
+        {
+            var res = await mediator.ExecuteQueryAsync<UserSearchRequest, UserSearchResponse>(query, cancellationToken);
             return Results.Ok(res);
         }).RequireAuthorization(builder => builder.RequireRole([Roles.Admin, Roles.SuperAdmin]));
         
