@@ -1,7 +1,6 @@
-using System.Data;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace UserService.Application.UnitOfWork.Interfaces;
+namespace UserService.Application.Abstractions.Persistence;
 
 public interface IUnitOfWork
 {
