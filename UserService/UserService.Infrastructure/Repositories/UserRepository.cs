@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UserService.Application.Abstractions.Repositories;
 using UserService.Application.Features.Admin.Users.Get.Contracts;
+using UserService.Application.Models;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Persistence;
 
@@ -16,7 +17,7 @@ public class UserRepository(
             .FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
     }
 
-    public async Task<IReadOnlyList<User>> GetUsersAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<User>> GetUsersAsync(UserSearchRequestModel searchRequest, CancellationToken cancellationToken)
     {
         return await userDbContext.Users
             .Join(userDbContext.UserRoles,

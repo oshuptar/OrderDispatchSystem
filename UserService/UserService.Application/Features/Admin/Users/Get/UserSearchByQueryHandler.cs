@@ -3,6 +3,7 @@ using UserService.Application.Common.Exceptions;
 using UserService.Application.Common.Mappers;
 using UserService.Application.Features.Admin.Users.Get.Contracts;
 using UserService.Application.Mediator.Interfaces;
+using UserService.Application.Models;
 using UserService.Domain.Entities;
 
 namespace UserService.Application.Features.Admin.Users.Get;
@@ -19,7 +20,9 @@ public class UserSearchByQueryHandler(
             throw new BadRequestException("Size must be positive");
         
         int totalCount = await userRepository.GetUsersCountAsync(command, cancellationToken);
-        IReadOnlyCollection<User> res = await userRepository.GetUsersAsync(command, cancellationToken);
+        IReadOnlyCollection<User> res = await userRepository.GetUsersAsync(
+            new UserSearchRequestModel(command.Email, command.Role, command.Page, command.Size),
+            cancellationToken);
         return new UserSearchResponse(res.ToUserModelList(), totalCount);
     }
 }
