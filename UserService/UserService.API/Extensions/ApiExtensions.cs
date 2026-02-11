@@ -1,3 +1,5 @@
+using Auth.Constants;
+using Auth.Paths;
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 using UserService.Application.Features.Admin.Users.Get.Contracts;
@@ -6,7 +8,6 @@ using UserService.Application.Features.Authentication.Register.Customer.Contract
 using UserService.Application.Features.Authentication.Register.User.Contracts;
 using UserService.Application.Mediator.Interfaces;
 using UserService.Application.Models;
-using UserService.Domain.Constants;
     
 namespace UserService.Extensions;
 
@@ -72,6 +73,11 @@ public static class ApiExtensions
             var res = await mediator.ExecuteQueryAsync<UserSearchRequest, UserSearchResponse>(query, cancellationToken);
             return Results.Ok(res);
         }).RequireAuthorization(builder => builder.RequireRole([Roles.Admin, Roles.SuperAdmin]));
+        
+        app.MapGet("/__claims", (HttpContext ctx) =>
+        {
+            return ctx.User.Claims.Select(c => new { c.Type, c.Value });
+        }).RequireAuthorization();
         
         return app;
     }

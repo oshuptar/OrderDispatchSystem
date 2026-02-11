@@ -1,6 +1,6 @@
+using Auth.Constants;
 using UserService.Application.Features.Authentication.Register.Customer.Contracts;
 using UserService.Application.Features.Authentication.Register.User.Contracts;
-using UserService.Domain.Constants;
 
 namespace UserService.Application.Common.Mappers;
 

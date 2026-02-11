@@ -1,4 +1,4 @@
-namespace UserService.Domain.Constants;
+namespace Auth.Constants;
 
 public static class Roles
 {

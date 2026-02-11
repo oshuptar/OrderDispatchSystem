@@ -1,11 +1,8 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Auth.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using UserService.Application.Abstractions.Repositories;
 using UserService.Domain.Entities;
-using UserService.Infrastructure.Options;
 using UserService.Infrastructure.Persistence;
 using UserService.Infrastructure.Repositories;
 
@@ -25,31 +22,11 @@ public static class InfrastructureExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
-
-    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
-    {
-        var jwt = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>() ?? throw new Exception("Invalid Jwt Options");
-        services.AddAuthentication(options => options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = jwt.Issuer,
-                    ValidAudience = jwt.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = false,
-                    ValidateIssuerSigningKey = true
-                };
-            });
-        return services;
-    }
-
+    
     // Registers options in DI
     public static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
+        services.AddJwtOptions(configuration);
         return services;
     }
 }
