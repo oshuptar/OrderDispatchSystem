@@ -6,6 +6,6 @@ namespace UserService.Application.Abstractions.Repositories;
 public interface IUserRepository
 {
     Task<User?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken);
-    Task<IReadOnlyList<User>> GetUsersBy(UserSearchRequest searchRequest, CancellationToken cancellationToken);
-    Task<int> GetUsersByCountAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken);
+    Task<IReadOnlyList<User>> GetUsersAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken);
+    Task<int> GetUsersCountAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken);
 }

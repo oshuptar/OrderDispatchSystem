@@ -16,7 +16,7 @@ public class UserRepository(
             .FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
     }
 
-    public async Task<IReadOnlyList<User>> GetUsersBy(UserSearchRequest searchRequest, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<User>> GetUsersAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken)
     {
         return await userDbContext.Users
             .Join(userDbContext.UserRoles,
@@ -43,7 +43,7 @@ public class UserRepository(
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<int> GetUsersByCountAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken)
+    public async Task<int> GetUsersCountAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken)
     {
         return await userDbContext.Users
             .Join(userDbContext.UserRoles,

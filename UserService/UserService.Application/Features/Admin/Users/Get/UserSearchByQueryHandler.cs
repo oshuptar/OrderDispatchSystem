@@ -18,8 +18,8 @@ public class UserSearchByQueryHandler(
         if(command.Size <= 0)
             throw new BadRequestException("Size must be positive");
         
-        int totalCount = await userRepository.GetUsersByCountAsync(command, cancellationToken);
-        IReadOnlyCollection<User> res = await userRepository.GetUsersBy(command, cancellationToken);
+        int totalCount = await userRepository.GetUsersCountAsync(command, cancellationToken);
+        IReadOnlyCollection<User> res = await userRepository.GetUsersAsync(command, cancellationToken);
         return new UserSearchResponse(res.ToUserModelList(), totalCount);
     }
 }
