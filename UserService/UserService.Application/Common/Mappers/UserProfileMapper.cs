@@ -1,4 +1,4 @@
-using UserService.Application.Features.Authentication.Register.Contracts;
+using UserService.Application.Features.Authentication.Register.User.Contracts;
 using UserService.Domain.Entities;
 
 namespace UserService.Application.Common.Mappers;

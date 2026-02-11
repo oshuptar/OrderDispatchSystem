@@ -21,7 +21,7 @@ var app = builder.Build();
 
 // Used for seeding data
 using (var scope = app.Services.CreateScope()){
-    await DataSeeder.SeedAsync(scope.ServiceProvider);
+    await DataSeeder.SeedAsync(scope.ServiceProvider, builder.Configuration);
 }
 app.AddMiddleware();
 app.MapEndpoints();
