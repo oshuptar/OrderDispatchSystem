@@ -1,4 +1,4 @@
-namespace UserService.Application.Common.Exceptions;
+namespace Auth.Exceptions;
 
 public class NotFoundException(String message) : Exception(message)
 { }

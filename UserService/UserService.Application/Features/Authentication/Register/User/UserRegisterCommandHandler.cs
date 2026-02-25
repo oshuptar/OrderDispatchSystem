@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using UserService.Application.Abstractions.Persistence;
 using UserService.Application.Abstractions.Repositories;
-using UserService.Application.Common.Mappers;
 using UserService.Application.Features.Admin.Users.Update.Contracts;
 using UserService.Application.Features.Authentication.Register.User.Contracts;
+using UserService.Application.Mappers;
 using UserService.Application.Mediator.Interfaces;
 using UserService.Domain.Entities;
 

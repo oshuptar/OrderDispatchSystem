@@ -1,3 +1,3 @@
-namespace UserService.Application.Common.Exceptions;
+namespace Auth.Exceptions;
 
 public class UnauthorisedException(String message = "Unauthorised") : Exception(message);

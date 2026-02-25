@@ -1,7 +1,7 @@
+using Auth.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using UserService.Application.Abstractions.Repositories;
-using UserService.Application.Common.Exceptions;
 using UserService.Application.Features.Admin.Users.Update.Contracts;
 using UserService.Application.Mediator.Interfaces;
 using UserService.Domain.Entities;

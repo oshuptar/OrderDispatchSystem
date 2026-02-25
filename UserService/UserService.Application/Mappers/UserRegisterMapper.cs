@@ -2,7 +2,7 @@ using Auth.Constants;
 using UserService.Application.Features.Authentication.Register.Customer.Contracts;
 using UserService.Application.Features.Authentication.Register.User.Contracts;
 
-namespace UserService.Application.Common.Mappers;
+namespace UserService.Application.Mappers;
 
 public static class UserRegisterMapper
 {

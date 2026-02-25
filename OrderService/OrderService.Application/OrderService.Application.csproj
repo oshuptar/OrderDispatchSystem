@@ -6,4 +6,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Abstractions\" />
+      <Folder Include="Features\" />
+      <Folder Include="Mappers\" />
+      <Folder Include="Mediator\Interfaces\" />
+      <Folder Include="Models\" />
+    </ItemGroup>
+
 </Project>

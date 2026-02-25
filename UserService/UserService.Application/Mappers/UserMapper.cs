@@ -2,7 +2,7 @@ using UserService.Application.Features.Authentication.Register.User.Contracts;
 using UserService.Application.Models;
 using UserService.Domain.Entities;
 
-namespace UserService.Application.Common.Mappers;
+namespace UserService.Application.Mappers;
 
 public record UserModelContext(IEnumerable<String> Roles);
 

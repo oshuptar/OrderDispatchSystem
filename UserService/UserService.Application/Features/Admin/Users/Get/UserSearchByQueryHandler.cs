@@ -1,7 +1,7 @@
+using Auth.Exceptions;
 using UserService.Application.Abstractions.Repositories;
-using UserService.Application.Common.Exceptions;
-using UserService.Application.Common.Mappers;
 using UserService.Application.Features.Admin.Users.Get.Contracts;
+using UserService.Application.Mappers;
 using UserService.Application.Mediator.Interfaces;
 using UserService.Application.Models;
 using UserService.Domain.Entities;
