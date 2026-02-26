@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace UserService.Application.Abstractions.Persistence;
+namespace Auth.Abstractions.Persistence;
 
 public interface IUnitOfWork
 {

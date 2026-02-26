@@ -1,7 +1,7 @@
+using Auth.Abstractions.Persistence;
 using Auth.Mediator.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using UserService.Application.Abstractions.Persistence;
 using UserService.Application.Abstractions.Repositories;
 using UserService.Application.Features.Admin.Users.Update.Contracts;
 using UserService.Application.Features.Authentication.Register.User.Contracts;

@@ -1,4 +1,4 @@
-namespace Auth.Paths;
+namespace Auth.Constants;
 
 public class PathResolver
 {

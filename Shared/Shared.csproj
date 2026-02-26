@@ -11,6 +11,9 @@
       <Reference Include="Microsoft.AspNetCore.Authentication.JwtBearer">
         <HintPath>..\..\..\.nuget\packages\microsoft.aspnetcore.authentication.jwtbearer\10.0.2\lib\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll</HintPath>
       </Reference>
+      <Reference Include="Microsoft.EntityFrameworkCore">
+        <HintPath>..\..\..\.nuget\packages\microsoft.entityframeworkcore\10.0.1\lib\net10.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+      </Reference>
       <Reference Include="Microsoft.IdentityModel.Tokens">
         <HintPath>..\..\..\.nuget\packages\microsoft.identitymodel.tokens\8.0.1\lib\net9.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
       </Reference>

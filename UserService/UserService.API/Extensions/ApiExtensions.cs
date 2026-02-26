@@ -1,6 +1,5 @@
 using Auth.Constants;
 using Auth.Mediator.Interfaces;
-using Auth.Paths;
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 using UserService.Application.Features.Admin.Users.Get.Contracts;
