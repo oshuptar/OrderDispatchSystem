@@ -1,4 +1,4 @@
-namespace UserService.Application.Mediator.Interfaces;
+namespace Auth.Mediator.Interfaces;
 
 public interface IQueryHandler<in T>
 {

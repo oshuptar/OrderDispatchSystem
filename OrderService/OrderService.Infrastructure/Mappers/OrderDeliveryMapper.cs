@@ -18,7 +18,8 @@ public static class OrderDeliveryMapper
             Order = entity.Order?.ToDomainModel(),
             DriverId = entity.DriverId,
             SourceAddressId = entity.SourceAddressId,
-            SourceAddress = entity.SourceAddress?.ToDomainModel()
+            SourceAddress = entity.SourceAddress?.ToDomainModel(),
+            OrderDeliveryStatus = entity.OrderDeliveryStatus,
         };
     }
 }

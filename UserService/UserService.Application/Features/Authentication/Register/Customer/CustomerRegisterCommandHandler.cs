@@ -1,7 +1,7 @@
+using Auth.Mediator.Interfaces;
 using UserService.Application.Features.Authentication.Register.Customer.Contracts;
 using UserService.Application.Features.Authentication.Register.User.Contracts;
 using UserService.Application.Mappers;
-using UserService.Application.Mediator.Interfaces;
 
 namespace UserService.Application.Features.Authentication.Register.Customer;
 

@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
+builder.Services.AddInfrastructure(builder.Configuration);
 var app = builder.Build();
 app.AddMiddleware();
 app.MapEndpoints();

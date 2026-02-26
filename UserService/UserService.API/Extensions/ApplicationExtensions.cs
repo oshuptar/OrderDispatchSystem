@@ -1,3 +1,5 @@
+using Auth.Mediator;
+using Auth.Mediator.Interfaces;
 using UserService.Application.Abstractions.Authentication;
 using UserService.Application.Abstractions.Persistence;
 using UserService.Application.Features.Admin.Users.Get;
@@ -10,8 +12,6 @@ using UserService.Application.Features.Authentication.Register.Customer;
 using UserService.Application.Features.Authentication.Register.Customer.Contracts;
 using UserService.Application.Features.Authentication.Register.User;
 using UserService.Application.Features.Authentication.Register.User.Contracts;
-using UserService.Application.Mediator;
-using UserService.Application.Mediator.Interfaces;
 using UserService.Application.Models;
 using UserService.Infrastructure.Persistence.UnitOfWork;
 using UserService.Infrastructure.Services;

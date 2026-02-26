@@ -1,4 +1,5 @@
 using Auth.Constants;
+using Auth.Mediator.Interfaces;
 using Auth.Paths;
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
@@ -6,7 +7,6 @@ using UserService.Application.Features.Admin.Users.Get.Contracts;
 using UserService.Application.Features.Authentication.Login.Contracts;
 using UserService.Application.Features.Authentication.Register.Customer.Contracts;
 using UserService.Application.Features.Authentication.Register.User.Contracts;
-using UserService.Application.Mediator.Interfaces;
 using UserService.Application.Models;
     
 namespace UserService.Extensions;

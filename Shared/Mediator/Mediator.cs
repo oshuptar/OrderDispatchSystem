@@ -1,7 +1,7 @@
+using Auth.Mediator.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using UserService.Application.Mediator.Interfaces;
 
-namespace UserService.Application.Mediator;
+namespace Auth.Mediator;
 
 public class Mediator(
     IServiceScopeFactory scopeFactory) : IMediator

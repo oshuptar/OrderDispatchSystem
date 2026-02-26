@@ -1,8 +1,8 @@
 using Auth.Exceptions;
+using Auth.Mediator.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using UserService.Application.Abstractions.Authentication;
 using UserService.Application.Features.Authentication.Login.Contracts;
-using UserService.Application.Mediator.Interfaces;
 using UserService.Domain.Entities;
 
 namespace UserService.Application.Features.Authentication.Login;

@@ -16,6 +16,7 @@ public static class OrderMapper
             Volume = entity.Volume,
             Weight = entity.Weight,
             ScheduledOrderDate = entity.ScheduledOrderDate,
+            OrderStatus = entity.OrderStatus,
         };
     }
 }

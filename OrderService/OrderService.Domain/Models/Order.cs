@@ -1,3 +1,5 @@
+using OrderService.Domain.Enums;
+
 namespace OrderService.Domain.Models;
 
 public class Order
@@ -9,6 +11,8 @@ public class Order
     public Guid? ProductionPlantId { get; set; }
     public ProductionPlant? ProductionPlant { get; set; }
         
+    public OrderStatus OrderStatus { get; set; } 
+    
     public int Volume { get; set; }
     public int Weight { get; set; }
     
