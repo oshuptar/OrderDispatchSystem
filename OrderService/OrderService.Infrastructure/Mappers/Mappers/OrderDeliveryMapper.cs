@@ -1,7 +1,7 @@
 using OrderService.Domain.Models;
 using OrderService.Infrastructure.Entities;
 
-namespace OrderService.Infrastructure.Mappers;
+namespace OrderService.Infrastructure.Mappers.Mappers;
 
 public static class OrderDeliveryMapper
 {
@@ -13,10 +13,9 @@ public static class OrderDeliveryMapper
             DeliveryAddress = entity.DeliveryAddress?.ToDomainModel(),
             DeliveryAddressId = entity.DeliveryAddressId,
             DeliveryTime = entity.DeliveryDateTime,
-            ScheduledDeliveryTime = entity.ScheduledDeliveryDateTime,
+            ScheduledDeliveryDateTime = entity.ScheduledDeliveryDateTime,
             OrderId = entity.OrderId,
             Order = entity.Order?.ToDomainModel(),
-            DriverId = entity.DriverId,
             SourceAddressId = entity.SourceAddressId,
             SourceAddress = entity.SourceAddress?.ToDomainModel(),
             OrderDeliveryStatus = entity.OrderDeliveryStatus,

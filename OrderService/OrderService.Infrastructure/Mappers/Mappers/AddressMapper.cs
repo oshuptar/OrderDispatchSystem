@@ -1,7 +1,7 @@
 using OrderService.Domain.Models;
 using OrderService.Infrastructure.Entities;
 
-namespace OrderService.Infrastructure.Mappers;
+namespace OrderService.Infrastructure.Mappers.Mappers;
 
 public static class AddressMapper
 {

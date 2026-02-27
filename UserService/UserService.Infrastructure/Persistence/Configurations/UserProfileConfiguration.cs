@@ -17,6 +17,5 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
             .WithOne(user => user.UserProfile)
             .HasForeignKey<UserProfile>(profile => profile.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-        
     }
 }

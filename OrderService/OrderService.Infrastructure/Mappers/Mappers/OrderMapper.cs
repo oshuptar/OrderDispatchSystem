@@ -1,7 +1,7 @@
 using OrderService.Domain.Models;
 using OrderService.Infrastructure.Entities;
 
-namespace OrderService.Infrastructure.Mappers;
+namespace OrderService.Infrastructure.Mappers.Mappers;
 
 public static class OrderMapper
 {
@@ -15,8 +15,9 @@ public static class OrderMapper
             ProductionPlantId = entity.ProductionPlantId,
             Volume = entity.Volume,
             Weight = entity.Weight,
-            ScheduledOrderDate = entity.ScheduledOrderDate,
+            ScheduledOrderDateTime = entity.ScheduledOrderDateTime,
             OrderStatus = entity.OrderStatus,
+            OrderDelivery = entity.OrderDelivery?.ToDomainModel()
         };
     }
 }

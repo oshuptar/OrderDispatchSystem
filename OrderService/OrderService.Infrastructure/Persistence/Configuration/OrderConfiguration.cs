@@ -15,7 +15,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
         builder.Property(order => order.UserId).IsRequired();
         builder.Property(order => order.Volume).IsRequired();
         builder.Property(order => order.Weight).IsRequired();
-        builder.Property(order => order.ScheduledOrderDate).IsRequired();
+        builder.Property(order => order.ScheduledOrderDateTime).IsRequired();
 
         builder.HasIndex(order => order.UserId);
     }

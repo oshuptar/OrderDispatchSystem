@@ -15,4 +15,9 @@ public class PathResolver
     {
         public static readonly String Base = Root +  "/users";
     }
+
+    public static class Orders
+    {
+        public static readonly String Base = Root + "/orders";
+    }
 }

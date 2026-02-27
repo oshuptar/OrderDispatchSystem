@@ -13,11 +13,16 @@ public class OrderDeliveryConfiguration : IEntityTypeConfiguration<OrderDelivery
         builder.Property(delivery => delivery.Id).ValueGeneratedOnAdd();
         builder.Property(delivery => delivery.OrderId).IsRequired();
         builder.Property(delivery => delivery.OrderDeliveryStatus).IsRequired();
-        builder.Property(delivery => delivery.DriverId).IsRequired();
         builder.Property(delivery => delivery.ScheduledDeliveryDateTime).IsRequired();
         builder.Property(delivery => delivery.SourceAddressId).IsRequired();
         builder.Property(delivery => delivery.DeliveryAddressId).IsRequired();
 
         builder.HasIndex(delivery => delivery.OrderId);
+        
+        // One-to-One relationShip with Order
+        builder.HasOne(orderDelivery => orderDelivery.Order)
+            .WithOne(order => order.OrderDelivery)
+            .HasForeignKey<OrderDeliveryEntity>(orderDelivery => orderDelivery.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
