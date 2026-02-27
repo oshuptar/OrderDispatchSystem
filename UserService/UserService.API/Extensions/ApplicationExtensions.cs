@@ -1,5 +1,8 @@
+using Auth.Abstractions.Persistence;
+using Auth.Mediator;
+using Auth.Mediator.Interfaces;
+using Auth.Persistence.UnitOfWork;
 using UserService.Application.Abstractions.Authentication;
-using UserService.Application.Abstractions.Persistence;
 using UserService.Application.Features.Admin.Users.Get;
 using UserService.Application.Features.Admin.Users.Get.Contracts;
 using UserService.Application.Features.Admin.Users.Update;
@@ -10,10 +13,8 @@ using UserService.Application.Features.Authentication.Register.Customer;
 using UserService.Application.Features.Authentication.Register.Customer.Contracts;
 using UserService.Application.Features.Authentication.Register.User;
 using UserService.Application.Features.Authentication.Register.User.Contracts;
-using UserService.Application.Mediator;
-using UserService.Application.Mediator.Interfaces;
 using UserService.Application.Models;
-using UserService.Infrastructure.Persistence.UnitOfWork;
+using UserService.Infrastructure.Persistence;
 using UserService.Infrastructure.Services;
 
 namespace UserService.Extensions;
@@ -23,7 +24,7 @@ public static class ApplicationExtensions
     public static IServiceCollection AddUserServices(this IServiceCollection services)
     {
         services.AddScoped<IMediator, Mediator>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork<UserDbContext>>();
         services.AddScoped<ICommandHandler<CustomerRegisterRequest, CustomerRegisterResponse>,
             CustomerRegisterCommandHandler>();
         services.AddScoped<ICommandHandler<UserRegisterRequest, UserRegisterResponse>, 

@@ -1,5 +1,5 @@
+using Auth.Constants;
 using Microsoft.AspNetCore.Identity;
-using UserService.Domain.Constants;
 using UserService.Domain.Entities;
 
 namespace UserService;

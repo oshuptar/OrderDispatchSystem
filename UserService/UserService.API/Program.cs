@@ -1,10 +1,6 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Scalar.AspNetCore;
+using Auth.Extensions;
 using UserService;
-using UserService.Domain.Entities;
 using UserService.Extensions;
-using UserService.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
