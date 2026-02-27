@@ -12,20 +12,20 @@ public class AddressConfiguration : IEntityTypeConfiguration<AddressEntity>
         builder.ToTable(Databases.Order.Tables.Addresses);
         builder.HasKey(address => address.Id);
         builder.Property(address => address.Id).ValueGeneratedOnAdd();
-        
         builder.Property(address => address.Country)
             .IsRequired()
             .HasMaxLength(64);
         builder.Property(address => address.City)
             .IsRequired()
             .HasMaxLength(64);
+        builder.Property(address => address.Region)
+            .IsRequired()
+            .HasMaxLength(64);
         builder.Property(address => address.Street).HasMaxLength(128);
-        builder.Property(address => address.Region).HasMaxLength(64);
+        builder.Property(address => address.Apartment).HasMaxLength(8);
         builder.Property(address => address.PostalCode).HasMaxLength(10);
         // Change to global constant
         builder.Property(address => address.Longitude).HasMaxLength(11);
         builder.Property(address => address.Latitude).HasMaxLength(11);
-        
-        // Enforce the rule that either address is present or coordinates
     }
 }

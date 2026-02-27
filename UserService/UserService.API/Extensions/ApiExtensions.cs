@@ -73,11 +73,6 @@ public static class ApiExtensions
             return Results.Ok(res);
         }).RequireAuthorization(builder => builder.RequireRole([Roles.Admin, Roles.SuperAdmin]));
         
-        app.MapGet("/__claims", (HttpContext ctx) =>
-        {
-            return ctx.User.Claims.Select(c => new { c.Type, c.Value });
-        }).RequireAuthorization();
-        
         return app;
     }
     

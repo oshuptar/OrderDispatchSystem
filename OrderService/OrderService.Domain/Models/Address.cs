@@ -3,11 +3,12 @@ namespace OrderService.Domain.Models;
 public class Address
 {
     public Guid Id {get; set;}
-    public String Country { get; set; }
-    public String? Region { get; set; }
-    public String City { get; set; }
-    public String? Street { get; set; }
-    public String? PostalCode { get; set; }
-    public String? Longitude { get; set; }
-    public String? Latitude { get; set; }
+    public string Country { get; set; } = String.Empty;
+    public string Region { get; set; } = String.Empty;
+    public string City { get; set; } = String.Empty;
+    public string? Street { get; set; }
+    public string? Apartment { get; set; } = String.Empty;
+    public string? PostalCode { get; set; }
+    public string? Longitude { get; set; }
+    public string? Latitude { get; set; }
 }

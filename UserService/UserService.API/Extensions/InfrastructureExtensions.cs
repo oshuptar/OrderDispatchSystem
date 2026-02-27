@@ -1,3 +1,4 @@
+using Auth.Constants;
 using Auth.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ public static class InfrastructureExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<UserDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("UserDb")));
+            options.UseNpgsql(configuration.GetConnectionString(Databases.User.DbName)));
         services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<UserDbContext>()
             .AddDefaultTokenProviders();

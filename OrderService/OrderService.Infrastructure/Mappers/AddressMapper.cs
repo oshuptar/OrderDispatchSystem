@@ -15,6 +15,7 @@ public static class AddressMapper
             PostalCode = entity.PostalCode,
             Street = entity.Street,
             Region = entity.Region,
+            Apartment = entity.Apartment,
             Longitude = entity.Longitude,
             Latitude = entity.Latitude
         };

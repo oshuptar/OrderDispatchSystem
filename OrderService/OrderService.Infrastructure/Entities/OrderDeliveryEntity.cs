@@ -14,8 +14,12 @@ public class OrderDeliveryEntity : Auditable
     
     public Guid DriverId { get; set; }
     // No navigational property since Drivers are stored in a different db
-    public required DateTime ScheduledDeliveryTime { get; set; }
-    public DateTime? DeliveryTime { get; set; }
+    
+    // The predicted delivery time. TODO: determine if needed
+    public required DateTime ScheduledDeliveryDateTime { get; set; }
+    
+    // Stores the actual delivery time for history
+    public DateTime? DeliveryDateTime { get; set; }
     
     public required Guid SourceAddressId { get; set; }
     public AddressEntity? SourceAddress { get; set; }

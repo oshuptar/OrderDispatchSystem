@@ -14,7 +14,7 @@ public class OrderDeliveryConfiguration : IEntityTypeConfiguration<OrderDelivery
         builder.Property(delivery => delivery.OrderId).IsRequired();
         builder.Property(delivery => delivery.OrderDeliveryStatus).IsRequired();
         builder.Property(delivery => delivery.DriverId).IsRequired();
-        builder.Property(delivery => delivery.ScheduledDeliveryTime).IsRequired();
+        builder.Property(delivery => delivery.ScheduledDeliveryDateTime).IsRequired();
         builder.Property(delivery => delivery.SourceAddressId).IsRequired();
         builder.Property(delivery => delivery.DeliveryAddressId).IsRequired();
 
