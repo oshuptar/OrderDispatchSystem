@@ -27,5 +27,24 @@ public class AddressConfiguration : IEntityTypeConfiguration<AddressEntity>
         // Change to global constant
         builder.Property(address => address.Longitude).HasMaxLength(11);
         builder.Property(address => address.Latitude).HasMaxLength(11);
+        
+        builder.HasIndex(address => new 
+            { 
+                address.Country, 
+                address.Region, 
+                address.City, 
+                address.Street, 
+                address.Apartment,
+                address.PostalCode ,
+                address.Longitude,
+                address.Latitude
+            }).IsUnique();
+
+        builder.HasMany(address => address.SourceOrderDeliveries)
+            .WithOne(orderDelivery => orderDelivery.SourceAddress)
+            .HasForeignKey(orderDelivery => orderDelivery.SourceAddressId);
+        builder.HasMany(address => address.DestinationOrderDeliveries)
+            .WithOne(orderDelivery => orderDelivery.DestinationAddress)
+            .HasForeignKey(orderDelivery => orderDelivery.DestinationAddressId);
     }
 }

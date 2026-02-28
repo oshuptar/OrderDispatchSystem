@@ -20,4 +20,19 @@ public static class AddressMapper
             Latitude = entity.Latitude
         };
     }
+
+    public static AddressEntity ToEntity(this Address model)
+    {
+        return new AddressEntity
+        {
+            Country = model.Country,
+            Region = model.Region,
+            City = model.City,
+            Street = model.Street,
+            Apartment = model.Apartment,
+            PostalCode = model.PostalCode,
+            Longitude = model.Longitude,
+            Latitude = model.Latitude
+        };
+    }
 }

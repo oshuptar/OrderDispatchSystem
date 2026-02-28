@@ -1,6 +1,6 @@
-namespace OrderService.Application.Models;
+namespace OrderService.Application.Features.Address.Create.Contracts;
 
-public record AddressRequestModel(
+public record AddressCreateRequest(
     string Country,
     string Region,
     string City,
@@ -8,4 +8,5 @@ public record AddressRequestModel(
     string? Apartment,
     string? PostalCode,
     string? Longitude,
-    string? Latitude);
+    string? Latitude
+    );

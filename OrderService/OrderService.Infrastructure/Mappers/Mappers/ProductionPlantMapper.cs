@@ -14,4 +14,13 @@ public static class ProductionPlantMapper
             Address = productionPlant.Address?.ToDomainModel(),
         };
     }
+    
+    public static ProductionPlantEntity ToEntity(this ProductionPlant model)
+    {
+        return new ProductionPlantEntity
+        {
+            Id = model.Id,
+            AddressId = model.AddressId,
+        };
+    }
 }

@@ -2,6 +2,8 @@ using Auth.Abstractions.Persistence;
 using Auth.Mediator;
 using Auth.Mediator.Interfaces;
 using Auth.Persistence.UnitOfWork;
+using OrderService.Application.Features.Address.Create;
+using OrderService.Application.Features.Address.Create.Contracts;
 using OrderService.Application.Features.Address.Get;
 using OrderService.Application.Features.Address.Get.Contracts;
 using OrderService.Application.Features.OrderPlatform.OrderCreate;
@@ -19,8 +21,11 @@ public static class ApplicationExtensions
         
         // Command Handlers:
         services.AddScoped<ICommandHandler
-            <ClientCreateOrderRequestModel, ClientCreateOrderResponseModel>,
+            <ClientCreateOrderRequest, ClientCreateOrderResponse>,
             ClientOrderCreateCommandHandler>();
+        services.AddScoped<ICommandHandler
+            <AddressCreateRequest, AddressCreateResponse>,
+            AddressCreateCommandHandler>();
             
         // Query Handlers:
         services.AddScoped<IQueryHandler

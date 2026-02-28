@@ -20,4 +20,18 @@ public static class OrderMapper
             OrderDelivery = entity.OrderDelivery?.ToDomainModel()
         };
     }
+
+    public static OrderEntity ToEntity(this Order model)
+    {
+        return new OrderEntity()
+        {
+            Id = model.Id,
+            UserId = model.UserId,
+            ProductionPlantId = model.ProductionPlantId,
+            Volume = model.Volume,
+            Weight = model.Weight,
+            ScheduledOrderDateTime = model.ScheduledOrderDateTime,
+            OrderStatus = model.OrderStatus,
+        };
+    }
 }

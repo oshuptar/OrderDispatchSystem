@@ -5,7 +5,7 @@ namespace OrderService.Application.Mappers;
 
 public static class OrderMapper
 {
-    public static Order ToDomainModel(this ClientCreateOrderRequestModel model)
+    public static Order ToDomainModel(this ClientCreateOrderRequest model)
     {
         return new Order()
         {

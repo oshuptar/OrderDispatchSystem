@@ -19,10 +19,10 @@ public static class ApiExtensions
         // Post an order by client from order platform
         app.MapPost (PathResolver.Orders.Base, async (
                 [FromServices] IMediator mediator,
-                [FromBody] ClientCreateOrderRequestModel command,
+                [FromBody] ClientCreateOrderRequest command,
                 CancellationToken cancellationToken) =>
         {
-            var res = await mediator.ExecuteCommandAsync<ClientCreateOrderRequestModel, ClientCreateOrderResponseModel>(command, cancellationToken);
+            var res = await mediator.ExecuteCommandAsync<ClientCreateOrderRequest, ClientCreateOrderResponse>(command, cancellationToken);
             return Results.Ok(res);
         });
         

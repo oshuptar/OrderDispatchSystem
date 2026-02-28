@@ -13,9 +13,9 @@ public class OrderDelivery
     // TODO: move to OrderDeliveryRide. Add Weight and Volume Columns there. This type of entities would be created by OrderDispatcher
     // The status of OrderDeliveryChanges to Completed if all OrderDeliveryRides have been successfully delivered
     public DateTime ScheduledDeliveryDateTime { get; set; }
-    public DateTime? DeliveryTime { get; set; }
+    public DateTime? DeliveryDateTime { get; set; }
     public Guid SourceAddressId { get; set; }
     public Address? SourceAddress { get; set; }
-    public Guid DeliveryAddressId { get; set; }
-    public Address? DeliveryAddress { get; set; }
+    public Guid DestinationAddressId { get; set; }
+    public Address? DestinationAddress { get; set; }
 }

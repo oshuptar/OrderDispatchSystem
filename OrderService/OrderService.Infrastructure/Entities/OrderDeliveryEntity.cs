@@ -1,4 +1,4 @@
-using Auth.Infrastructure;
+using Auth.Persistence;
 using OrderService.Domain.Enums;
 
 namespace OrderService.Infrastructure.Entities;
@@ -16,6 +16,6 @@ public class OrderDeliveryEntity : Auditable
     public DateTime? DeliveryDateTime { get; set; }
     public required Guid SourceAddressId { get; set; }
     public AddressEntity? SourceAddress { get; set; }
-    public required Guid DeliveryAddressId { get; set; }
-    public AddressEntity? DeliveryAddress { get; set; }
+    public required Guid DestinationAddressId { get; set; }
+    public AddressEntity? DestinationAddress { get; set; }
 }

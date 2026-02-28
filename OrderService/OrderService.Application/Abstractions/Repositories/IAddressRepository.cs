@@ -7,4 +7,5 @@ public interface IAddressRepository
 {
    Task<IReadOnlyCollection<Address>> GetAddressesAsync(AddressSearchRequestModel request, CancellationToken cancellationToken);
    Task<int> GetAddressesCountAsync(AddressSearchRequestModel request, CancellationToken cancellationToken);
+   Task CreateAddressAsync(Address address, CancellationToken cancellationToken);
 }

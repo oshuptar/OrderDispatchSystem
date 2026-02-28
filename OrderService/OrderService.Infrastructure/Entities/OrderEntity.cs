@@ -1,4 +1,4 @@
-using Auth.Infrastructure;
+using Auth.Persistence;
 using OrderService.Domain.Enums;
 
 namespace OrderService.Infrastructure.Entities;

@@ -12,5 +12,10 @@ public class ProductionPlantConfiguration : IEntityTypeConfiguration<ProductionP
         builder.ToTable(Databases.Order.Tables.ProductionPlants).HasKey(productionPlant => productionPlant.Id);
         builder.Property(productionPlant => productionPlant.Id).ValueGeneratedOnAdd();
         builder.Property(productionPlant => productionPlant.AddressId).IsRequired();
+
+        builder.HasMany(productionPlant => productionPlant.Orders)
+            .WithOne(order => order.ProductionPlant)
+            .HasForeignKey(order => order.ProductionPlantId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

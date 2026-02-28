@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using OrderService.Application.Abstractions.Repositories;
 using OrderService.Application.Models;
 using OrderService.Domain.Models;
+using OrderService.Domain.Models.Extensions;
+using OrderService.Infrastructure.Entities;
 using OrderService.Infrastructure.Mappers.Mappers;
 using OrderService.Infrastructure.Persistence;
 
@@ -43,5 +45,12 @@ public class AddressRepository(OrderDbContext orderDbContext) : IAddressReposito
                 (request.Longitude == null || a.Longitude == request.Longitude) &&
                 (request.Latitude == null || a.Latitude == request.Latitude)
             ).CountAsync(cancellationToken);
+    }
+
+    public async Task CreateAddressAsync(Address address, CancellationToken cancellationToken)
+    {
+        var normalisedAddress = address.CheckAddressValidity();
+        AddressEntity entity = normalisedAddress.ToEntity();
+        await orderDbContext.Addresses.AddAsync(entity, cancellationToken);
     }
 }

@@ -1,22 +1,26 @@
 using Auth.Abstractions.Persistence;
 using Auth.Mediator.Interfaces;
 using Microsoft.Extensions.Logging;
-using OrderService.Application.Features.Address.Get.Contracts;
+using OrderService.Application.Abstractions.Repositories;
 using OrderService.Application.Features.OrderPlatform.OrderCreate.Contracts;
 using OrderService.Application.Mappers;
+using OrderService.Application.Models;
 using OrderService.Domain.Models;
 using OrderService.Domain.Models.Extensions;
 
 namespace OrderService.Application.Features.OrderPlatform.OrderCreate;
 
 public class ClientOrderCreateCommandHandler (
-    IQueryHandler<AddressSearchRequest, AddressSearchResponse> addressSearchRequestHandler,
+    IOrderDeliveryRepository orderDeliveryRepository,
+    IOrderRepository orderRepository,
+    IAddressRepository addressRepository,
     IUnitOfWork unitOfWork,
     ILogger<ClientOrderCreateCommandHandler> logger
-    ): ICommandHandler<ClientCreateOrderRequestModel, ClientCreateOrderResponseModel>
+    ): ICommandHandler<ClientCreateOrderRequest, ClientCreateOrderResponse>
 {
-    public async Task<ClientCreateOrderResponseModel> HandleCommandAsync(
-        ClientCreateOrderRequestModel command,
+    // TODO: create commandHandlers per CRUD operation and then reuse instead of calling repository
+    public async Task<ClientCreateOrderResponse> HandleCommandAsync(
+        ClientCreateOrderRequest command,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("[{dateTime}]: Creating order", DateTime.Now);
@@ -26,9 +30,9 @@ public class ClientOrderCreateCommandHandler (
             if(DateTime.Now > command.ScheduledOrderDateTime)
                 throw new InvalidOperationException("The scheduled order date cannot be in the future");
             
-            var deliveryAddress = command.DeliveryAddress.ToDomainModel();
+            var deliveryAddress = command.DeliveryAddressRequest.ToDomainModel();
             var normalisedDeliveryAddress = deliveryAddress.CheckAddressValidity();
-            AddressSearchResponse res = await addressSearchRequestHandler.HandleQueryAsync(new AddressSearchRequest(
+            AddressSearchRequestModel model = new AddressSearchRequestModel(
                 normalisedDeliveryAddress.Country,
                 normalisedDeliveryAddress.Region,
                 normalisedDeliveryAddress.City,
@@ -36,28 +40,32 @@ public class ClientOrderCreateCommandHandler (
                 normalisedDeliveryAddress.Apartment,
                 normalisedDeliveryAddress.PostalCode,
                 normalisedDeliveryAddress.Longitude,
-                normalisedDeliveryAddress.Latitude
-            ), cancellationToken);
-
-            var resolvedAddress = res.Requests.FirstOrDefault();
-            if (resolvedAddress == null || res.TotalCount == 0)
+                normalisedDeliveryAddress.Latitude,
+                Page: 0,
+                Size: 1
+            );
+            var resolvedAddress = (await addressRepository.GetAddressesAsync(model, cancellationToken)).FirstOrDefault();
+            if (resolvedAddress is null)
             {
-                // TODO: save a new address to the db and assign to resolvedAddress var
+                await addressRepository.CreateAddressAsync(normalisedDeliveryAddress, cancellationToken);
+                resolvedAddress = normalisedDeliveryAddress;
             }
-            
-            // TODO: create Order and store in DB
+
             Order order = command.ToDomainModel();
+            await orderRepository.CreateOrderAsync(order, cancellationToken);
 
             OrderDelivery orderDelivery = new OrderDelivery()
             {
-                DeliveryAddressId = normalisedDeliveryAddress.Id,
-                DeliveryAddress = normalisedDeliveryAddress,
+                DestinationAddressId = resolvedAddress.Id,
+                DestinationAddress = resolvedAddress,
                 ScheduledDeliveryDateTime = order.ScheduledOrderDateTime,
                 OrderId = order.Id,
                 Order = order
             };
-            
-            return new ClientCreateOrderResponseModel(order.Id, orderDelivery.Id);
+            await orderDeliveryRepository.CreateOrderDeliveryAsync(orderDelivery, cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+            await unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
+            return new ClientCreateOrderResponse(order.Id, orderDelivery.Id);
         }
         catch (OperationCanceledException)
         {
