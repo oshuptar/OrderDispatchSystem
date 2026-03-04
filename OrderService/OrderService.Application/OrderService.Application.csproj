@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <Folder Include="Features\Admin\" />
-      <Folder Include="Features\Order\Create\" />
       <Folder Include="Features\Order\Get\" />
     </ItemGroup>
 

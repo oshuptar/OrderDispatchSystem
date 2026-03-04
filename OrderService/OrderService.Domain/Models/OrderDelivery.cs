@@ -5,7 +5,7 @@ namespace OrderService.Domain.Models;
 
 public class OrderDelivery
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     // One-To-One relationship with Order
     public Guid OrderId { get; set; }
     public Order? Order { get; set; }
@@ -14,7 +14,7 @@ public class OrderDelivery
     // The status of OrderDeliveryChanges to Completed if all OrderDeliveryRides have been successfully delivered
     public DateTime ScheduledDeliveryDateTime { get; set; }
     public DateTime? DeliveryDateTime { get; set; }
-    public Guid SourceAddressId { get; set; }
+    public Guid? SourceAddressId { get; set; }
     public Address? SourceAddress { get; set; }
     public Guid DestinationAddressId { get; set; }
     public Address? DestinationAddress { get; set; }

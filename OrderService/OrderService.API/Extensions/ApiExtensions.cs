@@ -1,7 +1,7 @@
 using Auth.Constants;
 using Auth.Mediator.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using OrderService.Application.Features.OrderPlatform.OrderCreate.Contracts;
+using OrderService.Application.Features.OrderPlatform.PostOrder.Contracts;
 using Scalar.AspNetCore;
 
 namespace OrderService.API.Extensions;
@@ -24,7 +24,7 @@ public static class ApiExtensions
         {
             var res = await mediator.ExecuteCommandAsync<ClientCreateOrderRequest, ClientCreateOrderResponse>(command, cancellationToken);
             return Results.Ok(res);
-        });
+        }).RequireAuthorization(builder => builder.RequireRole([Roles.Customer]));
         
         return app;
     }

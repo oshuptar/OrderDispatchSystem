@@ -10,11 +10,10 @@ public class OrderDeliveryConfiguration : IEntityTypeConfiguration<OrderDelivery
     public void Configure(EntityTypeBuilder<OrderDeliveryEntity> builder)
     {
         builder.ToTable(Databases.Order.Tables.OrderDeliveries).HasKey(delivery => delivery.Id);
-        builder.Property(delivery => delivery.Id).ValueGeneratedOnAdd();
+        builder.Property(delivery => delivery.Id).ValueGeneratedNever();
         builder.Property(delivery => delivery.OrderId).IsRequired();
         builder.Property(delivery => delivery.OrderDeliveryStatus).IsRequired();
         builder.Property(delivery => delivery.ScheduledDeliveryDateTime).IsRequired();
-        builder.Property(delivery => delivery.SourceAddressId).IsRequired();
         builder.Property(delivery => delivery.DestinationAddressId).IsRequired();
 
         builder.HasIndex(delivery => delivery.OrderId);

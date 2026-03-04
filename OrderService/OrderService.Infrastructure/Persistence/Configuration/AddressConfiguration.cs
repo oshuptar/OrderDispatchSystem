@@ -11,16 +11,10 @@ public class AddressConfiguration : IEntityTypeConfiguration<AddressEntity>
     {
         builder.ToTable(Databases.Order.Tables.Addresses);
         builder.HasKey(address => address.Id);
-        builder.Property(address => address.Id).ValueGeneratedOnAdd();
-        builder.Property(address => address.Country)
-            .IsRequired()
-            .HasMaxLength(64);
-        builder.Property(address => address.City)
-            .IsRequired()
-            .HasMaxLength(64);
-        builder.Property(address => address.Region)
-            .IsRequired()
-            .HasMaxLength(64);
+        builder.Property(address => address.Id).ValueGeneratedNever();
+        builder.Property(address => address.Country).IsRequired().HasMaxLength(64);
+        builder.Property(address => address.City).IsRequired().HasMaxLength(64);
+        builder.Property(address => address.Region).IsRequired().HasMaxLength(64);
         builder.Property(address => address.Street).HasMaxLength(128);
         builder.Property(address => address.Apartment).HasMaxLength(8);
         builder.Property(address => address.PostalCode).HasMaxLength(10);

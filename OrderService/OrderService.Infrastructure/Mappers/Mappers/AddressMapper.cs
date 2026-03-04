@@ -25,6 +25,7 @@ public static class AddressMapper
     {
         return new AddressEntity
         {
+            Id = model.Id,
             Country = model.Country,
             Region = model.Region,
             City = model.City,

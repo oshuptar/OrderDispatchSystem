@@ -11,7 +11,7 @@ public class AddressSearchByQueryHandler(
 {
     public async Task<AddressSearchResponse> HandleQueryAsync(AddressSearchRequest command, CancellationToken cancellationToken)
     {
-        // TODO: wrap in transaction?
+        // TODO: Validate and normalise before comparison
         var requestModel = new AddressSearchRequestModel(command.Country,command.Region,command.City, command.Street,
             command.Apartment,command.PostalCode, command.Longitude, command.Latitude, command.Page, command.Size);
         int totalCount = await addressRepository.GetAddressesCountAsync(requestModel, cancellationToken);

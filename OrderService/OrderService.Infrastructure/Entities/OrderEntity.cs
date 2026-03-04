@@ -14,6 +14,6 @@ public class OrderEntity : Auditable
         public ProductionPlantEntity? ProductionPlant { get; set; }
         public required int Volume { get; set; }
         public required int Weight { get; set; }
-        public required DateTime ScheduledOrderDateTime { get; set; }
         public OrderDeliveryEntity? OrderDelivery { get; set; }
+        public required DateTime RequestedDeliveryDateTime { get; set; }
 }

@@ -15,9 +15,9 @@ public static class OrderMapper
             ProductionPlantId = entity.ProductionPlantId,
             Volume = entity.Volume,
             Weight = entity.Weight,
-            ScheduledOrderDateTime = entity.ScheduledOrderDateTime,
             OrderStatus = entity.OrderStatus,
-            OrderDelivery = entity.OrderDelivery?.ToDomainModel()
+            OrderDelivery = entity.OrderDelivery?.ToDomainModel(),
+            RequestedDeliveryDateTime = entity.RequestedDeliveryDateTime,
         };
     }
 
@@ -30,8 +30,8 @@ public static class OrderMapper
             ProductionPlantId = model.ProductionPlantId,
             Volume = model.Volume,
             Weight = model.Weight,
-            ScheduledOrderDateTime = model.ScheduledOrderDateTime,
             OrderStatus = model.OrderStatus,
+            RequestedDeliveryDateTime = model.RequestedDeliveryDateTime,
         };
     }
 }

@@ -1,5 +1,4 @@
 using Auth.Exceptions;
-using OrderService.Domain.Enums;
 
 namespace OrderService.Domain.Models.Extensions;
 
@@ -31,6 +30,7 @@ public static class AddressExtensions
     {
         return new Address()
         {
+            Id = address.Id,
             Country = address.Country.TrimStart().TrimEnd(),
             Region = address.Region.TrimStart().TrimEnd(),
             City = address.City.TrimStart().TrimEnd(),

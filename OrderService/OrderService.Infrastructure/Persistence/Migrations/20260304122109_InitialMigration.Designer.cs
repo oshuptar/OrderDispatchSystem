@@ -12,7 +12,7 @@ using OrderService.Infrastructure.Persistence;
 namespace OrderService.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20260226162250_InitialMigration")]
+    [Migration("20260304122109_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -28,8 +28,11 @@ namespace OrderService.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("OrderService.Infrastructure.Entities.AddressEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Apartment")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -44,14 +47,8 @@ namespace OrderService.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastUpdatedBy")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Latitude")
                         .HasMaxLength(11)
@@ -66,6 +63,7 @@ namespace OrderService.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(10)");
 
                     b.Property<string>("Region")
+                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
@@ -78,35 +76,28 @@ namespace OrderService.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Country", "Region", "City", "Street", "Apartment", "PostalCode", "Longitude", "Latitude")
+                        .IsUnique();
+
                     b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("OrderService.Infrastructure.Entities.OrderDeliveryEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("DeliveryAddressId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("DeliveryTime")
+                    b.Property<DateTime?>("DeliveryDateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("DriverId")
+                    b.Property<Guid>("DestinationAddressId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastUpdatedBy")
-                        .HasColumnType("uuid");
 
                     b.Property<int>("OrderDeliveryStatus")
                         .HasColumnType("integer");
@@ -114,10 +105,10 @@ namespace OrderService.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("ScheduledDeliveryTime")
+                    b.Property<DateTime>("ScheduledDeliveryDateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("SourceAddressId")
+                    b.Property<Guid?>("SourceAddressId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -125,9 +116,10 @@ namespace OrderService.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliveryAddressId");
+                    b.HasIndex("DestinationAddressId");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.HasIndex("SourceAddressId");
 
@@ -137,20 +129,13 @@ namespace OrderService.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("OrderService.Infrastructure.Entities.OrderEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastUpdatedBy")
-                        .HasColumnType("uuid");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("integer");
@@ -158,7 +143,7 @@ namespace OrderService.Infrastructure.Persistence.Migrations
                     b.Property<Guid?>("ProductionPlantId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("ScheduledOrderDate")
+                    b.Property<DateTime>("RequestedDeliveryDateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -185,7 +170,6 @@ namespace OrderService.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("OrderService.Infrastructure.Entities.ProductionPlantEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AddressId")
@@ -194,14 +178,8 @@ namespace OrderService.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastUpdatedBy")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -215,25 +193,23 @@ namespace OrderService.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("OrderService.Infrastructure.Entities.OrderDeliveryEntity", b =>
                 {
-                    b.HasOne("OrderService.Infrastructure.Entities.AddressEntity", "DeliveryAddress")
-                        .WithMany()
-                        .HasForeignKey("DeliveryAddressId")
+                    b.HasOne("OrderService.Infrastructure.Entities.AddressEntity", "DestinationAddress")
+                        .WithMany("DestinationOrderDeliveries")
+                        .HasForeignKey("DestinationAddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OrderService.Infrastructure.Entities.OrderEntity", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
+                        .WithOne("OrderDelivery")
+                        .HasForeignKey("OrderService.Infrastructure.Entities.OrderDeliveryEntity", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OrderService.Infrastructure.Entities.AddressEntity", "SourceAddress")
-                        .WithMany()
-                        .HasForeignKey("SourceAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("SourceOrderDeliveries")
+                        .HasForeignKey("SourceAddressId");
 
-                    b.Navigation("DeliveryAddress");
+                    b.Navigation("DestinationAddress");
 
                     b.Navigation("Order");
 
@@ -243,8 +219,9 @@ namespace OrderService.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("OrderService.Infrastructure.Entities.OrderEntity", b =>
                 {
                     b.HasOne("OrderService.Infrastructure.Entities.ProductionPlantEntity", "ProductionPlant")
-                        .WithMany()
-                        .HasForeignKey("ProductionPlantId");
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductionPlantId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("ProductionPlant");
                 });
@@ -258,6 +235,23 @@ namespace OrderService.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("OrderService.Infrastructure.Entities.AddressEntity", b =>
+                {
+                    b.Navigation("DestinationOrderDeliveries");
+
+                    b.Navigation("SourceOrderDeliveries");
+                });
+
+            modelBuilder.Entity("OrderService.Infrastructure.Entities.OrderEntity", b =>
+                {
+                    b.Navigation("OrderDelivery");
+                });
+
+            modelBuilder.Entity("OrderService.Infrastructure.Entities.ProductionPlantEntity", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

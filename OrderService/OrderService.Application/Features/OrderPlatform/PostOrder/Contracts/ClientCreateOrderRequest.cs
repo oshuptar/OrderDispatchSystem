@@ -1,7 +1,6 @@
 using OrderService.Application.Features.Address.Create.Contracts;
-using OrderService.Application.Models;
 
-namespace OrderService.Application.Features.OrderPlatform.OrderCreate.Contracts;
+namespace OrderService.Application.Features.OrderPlatform.PostOrder.Contracts;
 
 public record ClientCreateOrderRequest(
     int Volume,

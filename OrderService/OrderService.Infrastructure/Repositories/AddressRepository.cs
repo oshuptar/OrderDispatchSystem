@@ -49,8 +49,8 @@ public class AddressRepository(OrderDbContext orderDbContext) : IAddressReposito
 
     public async Task CreateAddressAsync(Address address, CancellationToken cancellationToken)
     {
-        var normalisedAddress = address.CheckAddressValidity();
-        AddressEntity entity = normalisedAddress.ToEntity();
+        // Move validation here or keep in handlers?
+        AddressEntity entity = address.ToEntity();
         await orderDbContext.Addresses.AddAsync(entity, cancellationToken);
     }
 }
