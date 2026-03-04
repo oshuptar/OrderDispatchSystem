@@ -6,6 +6,7 @@ using OrderService.Application.Mappers;
 
 namespace OrderService.Application.Features.Order.Create;
 
+// TODO: add logging
 public class OrderCreateCommandHandler(
     IOrderRepository orderRepository,
     ICommandHandler<OrderDeliveryCreateRequest, OrderDeliveryCreateResponse> orderDeliveryCreateCommandHandler
@@ -15,6 +16,10 @@ public class OrderCreateCommandHandler(
     {
         if(DateTime.UtcNow > command.RequestedDeliveryDateTime)
             throw new InvalidOperationException("The scheduled order date cannot be in the future");
+        if(command.Volume <= 0)
+            throw new InvalidOperationException("Volume cannot be zero or negative");
+        if(command.Weight <= 0)
+            throw new InvalidOperationException("Weight cannot be zero or negative");
         
         Domain.Models.Order order = command.ToDomainModel();
         await orderRepository.CreateOrderAsync(order, cancellationToken);

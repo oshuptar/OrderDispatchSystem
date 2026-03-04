@@ -25,7 +25,7 @@ public class ClientOrderCreateCommandHandler (
         ClientCreateOrderRequest command,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("[{dateTime}]: Creating order", DateTime.Now);
+        logger.LogInformation("[{dateTime}]: Creating order", DateTime.UtcNow);
         var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
@@ -55,7 +55,7 @@ public class ClientOrderCreateCommandHandler (
                 resolvedAddressId = addressCreateResponse.Id;
             }
             OrderCreateResponse res = await orderCreateCommandHandler.HandleCommandAsync(new OrderCreateRequest(
-                userContext.User.Id,
+                userContext.User!.Id,
                 command.Volume,
                 command.Weight,
                 command.ScheduledOrderDateTime,
@@ -66,13 +66,13 @@ public class ClientOrderCreateCommandHandler (
         }
         catch (OperationCanceledException)
         {
-            logger.LogInformation("[{dateTime}]: Creating order cancelled", DateTime.Now);
+            logger.LogInformation("[{dateTime}]: Creating order cancelled", DateTime.UtcNow);
             await unitOfWork.RollbackTransactionAsync(transaction, CancellationToken.None);
             throw;
         }
         catch (Exception ex)
         {
-            logger.LogError("[{dateTime}]: Creating order failed: {message}", DateTime.Now, ex.Message);
+            logger.LogError("[{dateTime}]: Creating order failed: {message}", DateTime.UtcNow, ex.Message);
             await unitOfWork.RollbackTransactionAsync(transaction, cancellationToken);
             throw;
         }

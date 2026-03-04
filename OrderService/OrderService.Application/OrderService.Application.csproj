@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Admin\" />
-      <Folder Include="Features\Order\Get\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\OrderService.Domain\OrderService.Domain.csproj" />
     </ItemGroup>
 

@@ -18,5 +18,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
         builder.Property(order => order.RequestedDeliveryDateTime).IsRequired();
         builder.HasIndex(order => order.UserId);
         builder.HasQueryFilter(order => !order.IsDeleted);
+        
+        // TODO: add check constraints for Volume and Weight
     }
 }

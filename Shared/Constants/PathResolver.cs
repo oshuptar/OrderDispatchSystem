@@ -19,5 +19,6 @@ public class PathResolver
     public static class Orders
     {
         public static readonly String Base = Root + "/orders";
+        public static readonly string StartVerification = Base + "/{orderId:guid}" + "/start-verification";
     }
 }
