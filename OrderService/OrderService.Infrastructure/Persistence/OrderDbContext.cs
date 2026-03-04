@@ -1,9 +1,11 @@
 using Auth.Persistence;
 using Microsoft.EntityFrameworkCore;
+using OrderService.Application.Context;
 using OrderService.Infrastructure.Entities;
 
 namespace OrderService.Infrastructure.Persistence;
 
+// TODO: when adding UserContext to perform audit. When dropping/updating Db it fails to initialise the UserContext, because no httpContext is involed. Solution?
 public class OrderDbContext(
     DbContextOptions<OrderDbContext> dbContextOptions
     ) : DbContext(dbContextOptions)
@@ -27,11 +29,8 @@ public class OrderDbContext(
     
     private void Audit()
     {
-        var entries = ChangeTracker
-            .Entries<Auditable>();
-
+        var entries = ChangeTracker.Entries<Auditable>();
         var now = DateTime.UtcNow;
-
         foreach (var entry in entries)
         {
             if (entry.State == EntityState.Added)
@@ -39,7 +38,6 @@ public class OrderDbContext(
                 entry.Entity.CreatedAt = now;
                 entry.Entity.IsDeleted = false;
             }
-
             if (entry.State == EntityState.Modified)
             {
                 entry.Entity.UpdatedAt = now;
