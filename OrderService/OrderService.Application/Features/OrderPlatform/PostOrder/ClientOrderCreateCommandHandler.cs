@@ -55,7 +55,7 @@ public class ClientOrderCreateCommandHandler (
                 resolvedAddressId = addressCreateResponse.Id;
             }
             OrderCreateResponse res = await orderCreateCommandHandler.HandleCommandAsync(new OrderCreateRequest(
-                userContext.UserId,
+                userContext.User.Id,
                 command.Volume,
                 command.Weight,
                 command.ScheduledOrderDateTime,

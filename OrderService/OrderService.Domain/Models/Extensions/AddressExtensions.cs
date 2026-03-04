@@ -11,7 +11,6 @@ public static class AddressExtensions
         // checks whether the valid address was provided
         bool addressStructure = normalisedAddress.CheckAddressStructure();
         bool addressFormat = normalisedAddress.CheckAddressFormat();
-        bool addressExistence = normalisedAddress.CheckAddressExistence();
         
         // Throws custom exceptions or generic?
         if (!addressStructure)
@@ -19,9 +18,6 @@ public static class AddressExtensions
 
         if (!addressFormat)
             throw new BadRequestException("Address format is invalid");
-
-        if (!addressExistence)
-            throw new BadRequestException("Address does not exist");
 
         return normalisedAddress;
     }
@@ -57,13 +53,6 @@ public static class AddressExtensions
     // Checks the length constraints according to values provided in configuration
     private static bool CheckAddressLengthConstraint(this Address address)
     {
-        return true;
-    }
-    
-    // TODO: Shall use Google Api or smth
-    private static bool CheckAddressExistence(this Address address)
-    {
-        // temporarily returned true for testing purposes
         return true;
     }
 }

@@ -2,6 +2,7 @@ using Auth.Constants;
 using Auth.Extensions;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Application.Abstractions.Repositories;
+using OrderService.Infrastructure.Interceptors;
 using OrderService.Infrastructure.Persistence;
 using OrderService.Infrastructure.Repositories;
 
@@ -11,8 +12,12 @@ public static class InfrastructureExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<OrderDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString(Databases.Order.DbName)));
+        services.AddScoped<AuditInterceptor>();
+        services.AddDbContext<OrderDbContext>((sp, options) =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString(Databases.Order.DbName));
+            options.AddInterceptors(sp.GetRequiredService<AuditInterceptor>());
+        });
 
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderDeliveryRepository, OrderDeliveryRepository>();

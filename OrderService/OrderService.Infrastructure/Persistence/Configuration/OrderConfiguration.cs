@@ -17,5 +17,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
         builder.Property(order => order.Weight).IsRequired();
         builder.Property(order => order.RequestedDeliveryDateTime).IsRequired();
         builder.HasIndex(order => order.UserId);
+        builder.HasQueryFilter(order => !order.IsDeleted);
     }
 }

@@ -1,4 +1,3 @@
-using Auth.Abstractions.Persistence;
 using Auth.Mediator.Interfaces;
 using OrderService.Application.Abstractions.Repositories;
 using OrderService.Application.Features.Order.Create.Contracts;
@@ -14,7 +13,7 @@ public class OrderCreateCommandHandler(
 {
     public async Task<OrderCreateResponse> HandleCommandAsync(OrderCreateRequest command, CancellationToken cancellationToken)
     {
-        if(DateTime.Now > command.RequestedDeliveryDateTime)
+        if(DateTime.UtcNow > command.RequestedDeliveryDateTime)
             throw new InvalidOperationException("The scheduled order date cannot be in the future");
         
         Domain.Models.Order order = command.ToDomainModel();

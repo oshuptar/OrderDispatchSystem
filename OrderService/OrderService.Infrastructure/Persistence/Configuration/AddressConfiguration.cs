@@ -40,5 +40,6 @@ public class AddressConfiguration : IEntityTypeConfiguration<AddressEntity>
         builder.HasMany(address => address.DestinationOrderDeliveries)
             .WithOne(orderDelivery => orderDelivery.DestinationAddress)
             .HasForeignKey(orderDelivery => orderDelivery.DestinationAddressId);
+        builder.HasQueryFilter(orderDelivery => !orderDelivery.IsDeleted);
     }
 }

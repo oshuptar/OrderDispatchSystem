@@ -17,6 +17,7 @@ public class OrderDeliveryConfiguration : IEntityTypeConfiguration<OrderDelivery
         builder.Property(delivery => delivery.DestinationAddressId).IsRequired();
 
         builder.HasIndex(delivery => delivery.OrderId);
+        builder.HasQueryFilter(delivery => !delivery.IsDeleted);
         
         // One-to-One relationShip with Order
         builder.HasOne(orderDelivery => orderDelivery.Order)
