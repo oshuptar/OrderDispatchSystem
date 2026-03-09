@@ -11,12 +11,14 @@ public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
     {
         builder.ToTable(Databases.Order.Tables.Orders);
         builder.HasKey(order => order.Id);
-        builder.Property(order => order.Id).ValueGeneratedOnAdd();
+        builder.Property(order => order.Id).ValueGeneratedNever();
         builder.Property(order => order.UserId).IsRequired();
         builder.Property(order => order.Volume).IsRequired();
         builder.Property(order => order.Weight).IsRequired();
-        builder.Property(order => order.ScheduledOrderDate).IsRequired();
-
+        builder.Property(order => order.RequestedDeliveryDateTime).IsRequired();
         builder.HasIndex(order => order.UserId);
+        builder.HasQueryFilter(order => !order.IsDeleted);
+        
+        // TODO: add check constraints for Volume and Weight
     }
 }

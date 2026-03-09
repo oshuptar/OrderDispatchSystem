@@ -1,4 +1,4 @@
-using Auth.Infrastructure;
+using Auth.Persistence;
 
 namespace OrderService.Infrastructure.Entities;
 
@@ -13,4 +13,6 @@ public class AddressEntity : Auditable
     public string? PostalCode { get; set; }
     public string? Longitude { get; set; }
     public string? Latitude { get; set; }
+    public List<OrderDeliveryEntity>? SourceOrderDeliveries { get; set; }
+    public List<OrderDeliveryEntity>? DestinationOrderDeliveries { get; set; }
 }

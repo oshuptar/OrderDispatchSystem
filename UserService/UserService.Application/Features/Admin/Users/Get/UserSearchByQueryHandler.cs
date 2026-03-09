@@ -19,6 +19,8 @@ public class UserSearchByQueryHandler(
         if(command.Size <= 0)
             throw new BadRequestException("Size must be positive");
         
+        // TODO: wrap in transaction?
+        // TODO: change to model in GetUsersCountAsync
         int totalCount = await userRepository.GetUsersCountAsync(command, cancellationToken);
         IReadOnlyCollection<User> res = await userRepository.GetUsersAsync(
             new UserSearchRequestModel(command.Email, command.Role, command.Page, command.Size),

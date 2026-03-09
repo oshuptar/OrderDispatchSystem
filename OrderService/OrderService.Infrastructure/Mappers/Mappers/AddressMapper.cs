@@ -1,7 +1,7 @@
 using OrderService.Domain.Models;
 using OrderService.Infrastructure.Entities;
 
-namespace OrderService.Infrastructure.Mappers;
+namespace OrderService.Infrastructure.Mappers.Mappers;
 
 public static class AddressMapper
 {
@@ -18,6 +18,22 @@ public static class AddressMapper
             Apartment = entity.Apartment,
             Longitude = entity.Longitude,
             Latitude = entity.Latitude
+        };
+    }
+
+    public static AddressEntity ToEntity(this Address model)
+    {
+        return new AddressEntity
+        {
+            Id = model.Id,
+            Country = model.Country,
+            Region = model.Region,
+            City = model.City,
+            Street = model.Street,
+            Apartment = model.Apartment,
+            PostalCode = model.PostalCode,
+            Longitude = model.Longitude,
+            Latitude = model.Latitude
         };
     }
 }
