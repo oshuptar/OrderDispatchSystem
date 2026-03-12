@@ -11,7 +11,7 @@ public class OrderGetByIdQueryHandler(
 {
     public async Task<Domain.Models.Order> HandleQueryAsync(OrderGetByIdRequest command, CancellationToken cancellationToken)
     {
-        Domain.Models.Order? order = await orderRepository.GetOrderByIdAsync(command.Id, cancellationToken);
+        Domain.Models.Order? order = await orderRepository.GetByIdAsync(command.Id, cancellationToken);
         if (order is null)
             throw new NotFoundException($"Order with id {command.Id} not found");
         return order;

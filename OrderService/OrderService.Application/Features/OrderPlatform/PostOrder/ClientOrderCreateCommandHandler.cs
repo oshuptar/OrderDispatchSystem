@@ -8,6 +8,7 @@ using OrderService.Application.Features.Order.Create.Contracts;
 using OrderService.Application.Features.OrderPlatform.PostOrder.Contracts;
 using OrderService.Application.Mappers;
 using OrderService.Application.Models;
+using OrderService.Application.Models.Address;
 using OrderService.Domain.Models.Extensions;
 
 namespace OrderService.Application.Features.OrderPlatform.PostOrder;
@@ -40,7 +41,7 @@ public class ClientOrderCreateCommandHandler (
                 normalisedDeliveryAddress.PostalCode,
                 normalisedDeliveryAddress.Longitude,
                 normalisedDeliveryAddress.Latitude, Page: 0, Size: 1);
-            Guid? resolvedAddressId = (await addressRepository.GetAddressesAsync(model, cancellationToken)).FirstOrDefault()?.Id;
+            Guid? resolvedAddressId = (await addressRepository.GetAsync(model, cancellationToken)).FirstOrDefault()?.Id;
             if (resolvedAddressId is null)  
             {
                 AddressCreateResponse addressCreateResponse = await addressCreateCommandHandler.HandleCommandAsync(new AddressCreateRequest(

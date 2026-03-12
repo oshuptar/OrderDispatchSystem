@@ -22,7 +22,7 @@ public class OrderCreateCommandHandler(
             throw new InvalidOperationException("Weight cannot be zero or negative");
         
         Domain.Models.Order order = command.ToDomainModel();
-        await orderRepository.CreateOrderAsync(order, cancellationToken);
+        await orderRepository.CreateAsync(order, cancellationToken);
         await orderDeliveryCreateCommandHandler.HandleCommandAsync(
             new OrderDeliveryCreateRequest(order.Id,
                 order.RequestedDeliveryDateTime,

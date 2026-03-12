@@ -2,6 +2,7 @@ using Auth.Constants;
 using Auth.Mediator.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Application.Features.Admin.OrderStartVerification.Contracts;
+using OrderService.Application.Features.Order.Update.Contracts;
 using OrderService.Application.Features.OrderPlatform.PostOrder.Contracts;
 using Scalar.AspNetCore;
 
@@ -34,6 +35,18 @@ public static class ApiExtensions
             CancellationToken cancellationToken) =>
         {
             await mediator.ExecuteCommandAsync<OrderStartVerificationRequest>(new OrderStartVerificationRequest(orderId), cancellationToken);
+            return Results.Ok();
+        });
+        
+        // Update order by client before verification starts
+        app.MapPatch(PathResolver.Orders.ById, async (
+            [FromRoute] Guid orderId,
+            [FromServices] IMediator mediator,
+            [FromBody] OrderUpdateRequest command,
+            CancellationToken cancellationToken
+        ) =>
+        {
+            await mediator.ExecuteCommandAsync<OrderUpdateRequest>(command, cancellationToken);
             return Results.Ok();
         });
         

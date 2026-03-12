@@ -1,4 +1,4 @@
-namespace OrderService.Application.Models;
+namespace OrderService.Application.Models.Address;
 
 public record AddressSearchRequestModel
 (
