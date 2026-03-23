@@ -10,6 +10,6 @@ public record AddressSearchRequestModel
     string? PostalCode,
     string? Longitude,
     string? Latitude,
-    int Page,
-    int Size
+    int Page = 0,
+    int Size = 1
 );

@@ -41,8 +41,7 @@ public class ClientOrderUpdateCommandHandler(
                 || command.DestionationAddressUpdateRequest is not null)
             {
                 await orderDeliveryUpdateCommandHandler.HandleCommandAsync(
-                    new OrderDeliveryUpdateRequest(command.OrderId,
-                        command.RequestedDeliveryDateTime,
+                    new OrderDeliveryUpdateRequest(order.Id,
                         command.DestionationAddressUpdateRequest), cancellationToken);
             }
             await unitOfWork.SaveChangesAsync(cancellationToken);

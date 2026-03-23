@@ -15,7 +15,7 @@ public class OrderDeliveryCreateCommandHandler(
             throw new InvalidOperationException("The scheduled order delivery date cannot be in the future");
         
         Domain.Models.OrderDelivery entity = command.ToDomainModel();
-        await orderDeliveryRepository.CreateOrderDeliveryAsync(entity, cancellationToken);
+        await orderDeliveryRepository.CreateAsync(entity, cancellationToken);
         return new OrderDeliveryCreateResponse(entity.Id);
     }
 }
