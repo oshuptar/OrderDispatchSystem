@@ -37,8 +37,7 @@ public class ClientOrderUpdateCommandHandler(
                     command.RequestedDeliveryDateTime)
                 , cancellationToken);
 
-            if (command.RequestedDeliveryDateTime is not null
-                || command.DestionationAddressUpdateRequest is not null)
+            if (command.DestionationAddressUpdateRequest is not null)
             {
                 await orderDeliveryUpdateCommandHandler.HandleCommandAsync(
                     new OrderDeliveryUpdateRequest(order.Id,
