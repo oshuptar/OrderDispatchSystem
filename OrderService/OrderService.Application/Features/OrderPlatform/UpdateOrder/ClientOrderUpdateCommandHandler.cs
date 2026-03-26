@@ -2,6 +2,7 @@ using Auth.Abstractions.Persistence;
 using Auth.Exceptions;
 using Auth.Mediator.Interfaces;
 using Microsoft.Extensions.Logging;
+using OrderService.Application.Abstractions.EventStreaming;
 using OrderService.Application.Features.Order.Get.Contracts;
 using OrderService.Application.Features.Order.Update.Contracts;
 using OrderService.Application.Features.OrderDelivery.Update.Contracts;
@@ -15,7 +16,8 @@ public class ClientOrderUpdateCommandHandler(
     ICommandHandler<OrderUpdateRequest> orderUpdateCommandHandler,
     ICommandHandler<OrderDeliveryUpdateRequest> orderDeliveryUpdateCommandHandler,
     IUnitOfWork unitOfWork,
-    ILogger<ClientOrderUpdateCommandHandler> logger
+    ILogger<ClientOrderUpdateCommandHandler> logger,
+    IEventProducer eventProducer
     ) : ICommandHandler<ClientOrderUpdateRequest>
 {
     public async Task HandleCommandAsync(ClientOrderUpdateRequest command, CancellationToken cancellationToken)
