@@ -43,6 +43,7 @@ namespace OrderService.Infrastructure.Persistence.Migrations
                     Topic = table.Column<string>(type: "text", nullable: false),
                     Key = table.Column<string>(type: "text", nullable: false),
                     Payload = table.Column<string>(type: "text", nullable: false),
+                    Error = table.Column<string>(type: "text", nullable: true),
                     EventType = table.Column<int>(type: "integer", nullable: false),
                     ProcessedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

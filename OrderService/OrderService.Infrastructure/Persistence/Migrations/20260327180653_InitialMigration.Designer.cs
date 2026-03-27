@@ -12,7 +12,7 @@ using OrderService.Infrastructure.Persistence;
 namespace OrderService.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20260326112414_InitialMigration")]
+    [Migration("20260327180653_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -185,10 +185,9 @@ namespace OrderService.Infrastructure.Persistence.Migrations
                     b.ToTable("Orders", (string)null);
                 });
 
-            modelBuilder.Entity("OrderService.Infrastructure.Entities.OutboxEvent", b =>
+            modelBuilder.Entity("OrderService.Infrastructure.Entities.OutboxMessageEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -196,6 +195,9 @@ namespace OrderService.Infrastructure.Persistence.Migrations
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("text");
 
                     b.Property<int>("EventType")
                         .HasColumnType("integer");

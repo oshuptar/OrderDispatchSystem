@@ -15,7 +15,7 @@ public class OrderCreateCommandHandler(
     public async Task<OrderCreateResponse> HandleCommandAsync(OrderCreateRequest command, CancellationToken cancellationToken)
     {
         if(DateTime.UtcNow > command.RequestedDeliveryDateTime)
-            throw new InvalidOperationException("The scheduled order date cannot be in the future");
+            throw new InvalidOperationException("The scheduled order date must be in the future");
         if(command.Volume <= 0)
             throw new InvalidOperationException("Volume cannot be zero or negative");
         if(command.Weight <= 0)

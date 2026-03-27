@@ -25,6 +25,7 @@ public static class InfrastructureExtensions
         services.AddScoped<IOrderDeliveryRepository, OrderDeliveryRepository>();
         services.AddScoped<IProductionPlantRepository, ProductionPlantRepository>();
         services.AddScoped<IAddressRepository, AddressRepository>();
+        services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
 
         // Registers Kafka Event Producer
         services.AddSingleton<IEventProducer, KafkaEventProducer>();

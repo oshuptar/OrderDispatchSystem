@@ -1,6 +1,5 @@
 using Auth.Extensions;
 using Auth.Options;
-using Microsoft.Extensions.Options;
 using OrderService.API.Bootstrap;
 using OrderService.API.Extensions;
 
@@ -9,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddOptions();
+builder.Services.AddOptions(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddOrderServices(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);

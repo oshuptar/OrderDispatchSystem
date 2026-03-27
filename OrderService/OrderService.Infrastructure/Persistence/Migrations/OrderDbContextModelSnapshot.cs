@@ -182,10 +182,9 @@ namespace OrderService.Infrastructure.Persistence.Migrations
                     b.ToTable("Orders", (string)null);
                 });
 
-            modelBuilder.Entity("OrderService.Infrastructure.Entities.OutboxEvent", b =>
+            modelBuilder.Entity("OrderService.Infrastructure.Entities.OutboxMessageEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -193,6 +192,9 @@ namespace OrderService.Infrastructure.Persistence.Migrations
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("text");
 
                     b.Property<int>("EventType")
                         .HasColumnType("integer");

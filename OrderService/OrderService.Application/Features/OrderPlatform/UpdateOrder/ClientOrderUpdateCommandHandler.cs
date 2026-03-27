@@ -29,7 +29,7 @@ public class ClientOrderUpdateCommandHandler(
 {
     public async Task HandleCommandAsync(ClientOrderUpdateRequest command, CancellationToken cancellationToken)
     {
-        var transaction = await  unitOfWork.BeginTransactionAsync(cancellationToken);
+        var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
             Domain.Models.Order order = await orderGetByIdQueryHandler.HandleQueryAsync(
@@ -40,10 +40,9 @@ public class ClientOrderUpdateCommandHandler(
     
             await orderUpdateCommandHandler.HandleCommandAsync(
                 new OrderUpdateRequest(command.OrderId,
-                    command.OrderStatus,
-                    command.Volume,
-                    command.Weight,
-                    command.RequestedDeliveryDateTime)
+                    Volume: command.Volume,
+                    Weight: command.Weight,
+                    RequestedDeliveryDateTime: command.RequestedDeliveryDateTime)
                 , cancellationToken);
 
             if (command.DestionationAddressUpdateRequest is not null)
@@ -54,9 +53,11 @@ public class ClientOrderUpdateCommandHandler(
             }
             
             // Outbox implementation:
-            ClientOrderUpdatedIntegrationEvent integrationEvent = new ClientOrderUpdatedIntegrationEvent(
+            ClientOrderUpdatedIntegrationEvent integrationEvent = 
+                new ClientOrderUpdatedIntegrationEvent(
                 command.OrderId,
-                userContext.User!.Id);
+                userContext.User!.Id,
+                DateTime.UtcNow);
             await outboxMessageRepository.CreateAsync(
                 new OutboxMessageCreateModel(Id: Guid.NewGuid(),
                     Topic: nameof(EventTopic.Order),

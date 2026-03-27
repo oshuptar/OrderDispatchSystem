@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OrderService.Application.Features.Admin.OrderStartVerification.Contracts;
 using OrderService.Application.Features.Order.Update.Contracts;
 using OrderService.Application.Features.OrderPlatform.PostOrder.Contracts;
+using OrderService.Application.Features.OrderPlatform.UpdateOrder.Contracts;
 using Scalar.AspNetCore;
 
 namespace OrderService.API.Extensions;
@@ -42,11 +43,11 @@ public static class ApiExtensions
         app.MapPatch(PathResolver.Orders.ById, async (
             [FromRoute] Guid orderId,
             [FromServices] IMediator mediator,
-            [FromBody] OrderUpdateRequest command,
+            [FromBody] ClientOrderUpdateRequest command,  
             CancellationToken cancellationToken
         ) =>
         {
-            await mediator.ExecuteCommandAsync<OrderUpdateRequest>(command, cancellationToken);
+            await mediator.ExecuteCommandAsync<ClientOrderUpdateRequest>(command, cancellationToken);
             return Results.Ok();
         });
         
