@@ -1,8 +1,8 @@
 using Auth.Constants;
 using Auth.Extensions;
 using Microsoft.EntityFrameworkCore;
-using OrderService.Application.Abstractions.EventStreaming;
 using OrderService.Application.Abstractions.Repositories;
+using OrderService.Application.EventStreaming.EventStreaming;
 using OrderService.Infrastructure.Interceptors;
 using OrderService.Infrastructure.Kafka;
 using OrderService.Infrastructure.Persistence;

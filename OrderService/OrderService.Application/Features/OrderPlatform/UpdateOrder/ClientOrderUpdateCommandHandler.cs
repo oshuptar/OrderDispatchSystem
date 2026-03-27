@@ -1,13 +1,19 @@
+using System.Text.Json;
 using Auth.Abstractions.Persistence;
 using Auth.Exceptions;
+using Auth.Infrastructure.KafkaTopics;
 using Auth.Mediator.Interfaces;
 using Microsoft.Extensions.Logging;
-using OrderService.Application.Abstractions.EventStreaming;
+using OrderService.Application.Abstractions.Repositories;
+using OrderService.Application.Context;
+using OrderService.Application.EventStreaming.IntegrationEvents;
 using OrderService.Application.Features.Order.Get.Contracts;
 using OrderService.Application.Features.Order.Update.Contracts;
 using OrderService.Application.Features.OrderDelivery.Update.Contracts;
 using OrderService.Application.Features.OrderPlatform.UpdateOrder.Contracts;
+using OrderService.Application.Models.Outbox;
 using OrderService.Domain.Enums;
+using OrderService.Domain.Models.Enums;
 
 namespace OrderService.Application.Features.OrderPlatform.UpdateOrder;
 
@@ -17,7 +23,8 @@ public class ClientOrderUpdateCommandHandler(
     ICommandHandler<OrderDeliveryUpdateRequest> orderDeliveryUpdateCommandHandler,
     IUnitOfWork unitOfWork,
     ILogger<ClientOrderUpdateCommandHandler> logger,
-    IEventProducer eventProducer
+    IOutboxMessageRepository outboxMessageRepository,
+    UserContext userContext
     ) : ICommandHandler<ClientOrderUpdateRequest>
 {
     public async Task HandleCommandAsync(ClientOrderUpdateRequest command, CancellationToken cancellationToken)
@@ -45,6 +52,19 @@ public class ClientOrderUpdateCommandHandler(
                     new OrderDeliveryUpdateRequest(order.Id,
                         command.DestionationAddressUpdateRequest), cancellationToken);
             }
+            
+            // Outbox implementation:
+            ClientOrderUpdatedIntegrationEvent integrationEvent = new ClientOrderUpdatedIntegrationEvent(
+                command.OrderId,
+                userContext.User!.Id);
+            await outboxMessageRepository.CreateAsync(
+                new OutboxMessageCreateModel(Id: Guid.NewGuid(),
+                    Topic: nameof(EventTopic.Order),
+                    Key: command.OrderId.ToString(),
+                    Payload: JsonSerializer.Serialize(integrationEvent),
+                    EventType: OrderEventType.ClientOrderUpdated),
+                cancellationToken);
+            
             await unitOfWork.SaveChangesAsync(cancellationToken);
             await unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
             logger.LogInformation("[{dateTime}]: Client - Order updated successfully", DateTime.UtcNow);

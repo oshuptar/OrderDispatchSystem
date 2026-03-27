@@ -1,8 +1,10 @@
+using System.Text;
 using System.Text.Json;
 using Auth.Options;
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
-using OrderService.Application.Abstractions.EventStreaming;
+using OrderService.Application.EventStreaming.EventStreaming;
+using OrderService.Domain.Models.Enums;
 
 namespace OrderService.Infrastructure.Kafka;
 
@@ -20,14 +22,18 @@ public class KafkaEventProducer : IEventProducer, IDisposable
         _producer = new ProducerBuilder<string, string>(config).Build();
     }
     
-    public async Task ProduceAsync<K, V>(string topic, K key, V message, CancellationToken cancellationToken)
+    public async Task ProduceAsync(string topic, string key, string message, OrderEventType eventType, CancellationToken cancellationToken)
     {
         var payload = JsonSerializer.Serialize(message);
         var serializedKey = key?.ToString() ?? string.Empty;
         await _producer.ProduceAsync(topic, new Message<string, string>()
         {
             Key = serializedKey,
-            Value = payload
+            Value = payload,
+            Headers = new Headers
+            {
+                {"event-type", Encoding.UTF8.GetBytes(eventType.ToString()) }
+            }
         }, cancellationToken);
     }
 
