@@ -19,4 +19,9 @@ public static class Databases
     {  
         public const String DbName = "UserDb";
     }
+    
+    public static class Driver
+    {  
+        public const String DbName = "DriverDb";
+    }
 }

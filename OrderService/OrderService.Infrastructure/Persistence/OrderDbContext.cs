@@ -1,6 +1,5 @@
 using Auth.Persistence;
 using Microsoft.EntityFrameworkCore;
-using OrderService.Application.Context;
 using OrderService.Infrastructure.Entities;
 
 namespace OrderService.Infrastructure.Persistence;

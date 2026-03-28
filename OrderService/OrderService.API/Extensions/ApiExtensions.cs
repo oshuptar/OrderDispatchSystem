@@ -82,7 +82,7 @@ public static class ApiExtensions
         
         // Search orders by parameters
         app.MapGet(PathResolver.Orders.Base, async (
-            [FromQuery] OrderSearchByRequest queryParams,
+            [AsParameters] OrderSearchByRequest queryParams,
             [FromServices] IMediator mediator,
             CancellationToken cancellationToken
             ) =>

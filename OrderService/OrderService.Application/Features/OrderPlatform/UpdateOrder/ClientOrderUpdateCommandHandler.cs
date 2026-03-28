@@ -1,11 +1,11 @@
 using System.Text.Json;
 using Auth.Abstractions.Persistence;
+using Auth.Context;
 using Auth.Exceptions;
 using Auth.Infrastructure.KafkaTopics;
 using Auth.Mediator.Interfaces;
 using Microsoft.Extensions.Logging;
 using OrderService.Application.Abstractions.Repositories;
-using OrderService.Application.Context;
 using OrderService.Application.EventStreaming.IntegrationEvents;
 using OrderService.Application.Features.Order.Get.Contracts;
 using OrderService.Application.Features.Order.Update.Contracts;

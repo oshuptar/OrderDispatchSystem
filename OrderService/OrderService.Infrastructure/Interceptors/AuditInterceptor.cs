@@ -1,7 +1,7 @@
+using Auth.Context;
 using Auth.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using OrderService.Application.Context;
 
 namespace OrderService.Infrastructure.Interceptors;
 
