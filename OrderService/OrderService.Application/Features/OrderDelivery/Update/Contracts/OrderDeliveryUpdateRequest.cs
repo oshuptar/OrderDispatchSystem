@@ -7,5 +7,6 @@ public record OrderDeliveryUpdateRequest(
     Guid OrderId,
     DateTime? RequestedDeliveryDateTime = null,
     ClientAddressUpdateRequest? DestionationAddressUpdateRequest = null,
-    OrderDeliveryStatus? OrderDeliveryStatus = null
+    OrderDeliveryStatus? OrderDeliveryStatus = null,
+    Guid? SourceAddressId = null
     );

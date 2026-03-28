@@ -11,7 +11,8 @@ namespace OrderService.Application.Features.OrderDelivery.Update;
 public class OrderDeliveryUpdateCommandHandler(
     IQueryHandler<AddressSearchRequest, AddressSearchResponse> addressSearchQueryHandler,
     ICommandHandler<AddressCreateRequest, AddressCreateResponse> addressCreateCommandHandler,
-    IOrderDeliveryRepository orderDeliveryRepository
+    IOrderDeliveryRepository orderDeliveryRepository,
+    IProductionPlantRepository productionPlantRepository
     ) : ICommandHandler<OrderDeliveryUpdateRequest>
 {
     public async Task HandleCommandAsync(OrderDeliveryUpdateRequest command, CancellationToken cancellationToken)
@@ -22,6 +23,9 @@ public class OrderDeliveryUpdateCommandHandler(
         
         if(orderDelivery is null)
             throw new NotFoundException($"OrderDelivery with id {command.OrderId} not found");
+        
+        if(command.SourceAddressId.HasValue && !(await productionPlantRepository.ExistsByIdAsync(command.SourceAddressId.Value, cancellationToken)))
+           throw new NotFoundException($"Production plant with id {command.SourceAddressId} not found");
 
         var parametrisedAddress = new Domain.Models.Address
         {
@@ -63,7 +67,8 @@ public class OrderDeliveryUpdateCommandHandler(
             orderDelivery.Id,
             orderDelivery.ScheduledDeliveryDateTime,
             orderDelivery.DestinationAddressId,
-            orderDelivery.OrderDeliveryStatus
+            orderDelivery.OrderDeliveryStatus,
+            command.SourceAddressId
             ), cancellationToken);
     }
 }

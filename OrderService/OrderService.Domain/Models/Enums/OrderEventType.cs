@@ -5,5 +5,6 @@ public enum OrderEventType
     ClientOrderCreated = 0,
     ClientOrderUpdated,
     OrderVerified,
+    OrderProductionPlantAssigned,
     OrderDeleted,
 }

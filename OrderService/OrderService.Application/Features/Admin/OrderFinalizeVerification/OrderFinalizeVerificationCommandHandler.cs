@@ -36,12 +36,7 @@ public class OrderFinalizeVerificationCommandHandler(
             // Outbox implementation:
             OrderVerifiedIntegrationEvent integrationEvent = new OrderVerifiedIntegrationEvent(
                 order.Id,
-                order.UserId,
-                order.Volume,
-                order.Weight,
-                order.RequestedDeliveryDateTime,
-                DateTime.UtcNow
-            );
+                order.UserId);
             await outboxMessageRepository.CreateAsync(
                 new OutboxMessageCreateModel(
                     Guid.NewGuid(),

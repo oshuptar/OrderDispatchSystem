@@ -4,9 +4,4 @@ namespace OrderService.Application.EventStreaming.IntegrationEvents;
 // The production service needs a projection of order
 public record OrderVerifiedIntegrationEvent(
     Guid OrderId, 
-    Guid ClientId,
-    int Volume ,
-    int Weight,
-    DateTime RequestedDeliveryDateTime,
-    DateTime VerifiedAt
-    );
+    Guid ClientId);

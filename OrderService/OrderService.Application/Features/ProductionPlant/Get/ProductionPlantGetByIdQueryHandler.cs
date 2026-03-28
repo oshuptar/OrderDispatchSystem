@@ -1,12 +1,20 @@
+using Auth.Exceptions;
 using Auth.Mediator.Interfaces;
+using OrderService.Application.Abstractions.Repositories;
 using OrderService.Application.Features.ProductionPlant.Get.Contracts;
 
 namespace OrderService.Application.Features.ProductionPlant.Get;
 
-public class ProductionPlantGetByIdQueryHandler : IQueryHandler<ProductionPlantGetByIdRequest>
+public class ProductionPlantGetByIdQueryHandler (
+    IProductionPlantRepository productionPlantRepository
+    ) : IQueryHandler<ProductionPlantGetByIdRequest, Domain.Models.ProductionPlant>
 {
-    public Task HandleQueryAsync(ProductionPlantGetByIdRequest query, CancellationToken cancellationToken)
+    public async Task<Domain.Models.ProductionPlant> HandleQueryAsync(ProductionPlantGetByIdRequest command, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        Domain.Models.ProductionPlant? productionPlant =
+            await productionPlantRepository.GetByIdAsync(command.Guid, cancellationToken);
+        if (productionPlant is null)
+            throw new NotFoundException($"Production plant with id: {command.Guid} not found");
+        return productionPlant;
     }
 }
