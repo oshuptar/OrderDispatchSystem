@@ -14,7 +14,7 @@ public class AddressCreateCommandHandler(
     {
         var address = command.ToDomainModel();
         var normalisedDeliveryAddress = address.CheckAddressValidity();
-        await repository.CreateAddressAsync(normalisedDeliveryAddress, cancellationToken);
+        await repository.CreateAsync(normalisedDeliveryAddress, cancellationToken);
         return new AddressCreateResponse(normalisedDeliveryAddress.Id);
     }
 }

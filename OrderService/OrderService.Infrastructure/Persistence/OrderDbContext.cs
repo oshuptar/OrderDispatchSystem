@@ -14,7 +14,7 @@ public class OrderDbContext(
     public DbSet<AddressEntity> Addresses => Set<AddressEntity>();
     public DbSet<OrderDeliveryEntity> OrderDeliveries => Set<OrderDeliveryEntity>();
     public DbSet<ProductionPlantEntity> ProductionPlants => Set<ProductionPlantEntity>();
-    
+    public DbSet<OutboxMessageEntity> OutboxMessages => Set<OutboxMessageEntity>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

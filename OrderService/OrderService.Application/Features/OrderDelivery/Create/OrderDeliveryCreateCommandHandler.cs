@@ -11,11 +11,11 @@ public class OrderDeliveryCreateCommandHandler(
 {
     public async Task<OrderDeliveryCreateResponse> HandleCommandAsync(OrderDeliveryCreateRequest command, CancellationToken cancellationToken)
     {
-        if(command.ScheduledDeliveryDateTime > DateTime.UtcNow)
-            throw new InvalidOperationException("The scheduled order delivery date cannot be in the future");
+        if(DateTime.UtcNow > command.ScheduledDeliveryDateTime)
+            throw new InvalidOperationException("The scheduled order delivery must be in the future");
         
         Domain.Models.OrderDelivery entity = command.ToDomainModel();
-        await orderDeliveryRepository.CreateOrderDeliveryAsync(entity, cancellationToken);
+        await orderDeliveryRepository.CreateAsync(entity, cancellationToken);
         return new OrderDeliveryCreateResponse(entity.Id);
     }
 }

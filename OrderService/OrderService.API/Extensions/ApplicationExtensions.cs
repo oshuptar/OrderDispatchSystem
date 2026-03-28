@@ -4,6 +4,7 @@ using Auth.Mediator.Interfaces;
 using Auth.Persistence.UnitOfWork;
 using OrderService.Application.Context;
 using OrderService.Application.Features.Order.Create;
+using OrderService.Application.Workers;
 using OrderService.Infrastructure.Persistence;
 
 namespace OrderService.API.Extensions;
@@ -25,6 +26,9 @@ public static class ApplicationExtensions
         services.AddServiceImplementation(ServiceLifetime.Scoped, typeof(IQueryHandler<,>));
         services.AddServiceImplementation(ServiceLifetime.Scoped, typeof(IQueryHandler<>));
         
+        // Background workers:
+        // No scope is created for a hosted service by default
+        services.AddHostedService<OutboxPublisherWorker>();
         return services;
     }
 

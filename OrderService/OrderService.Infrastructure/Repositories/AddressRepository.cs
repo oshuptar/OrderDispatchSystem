@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OrderService.Application.Abstractions.Repositories;
-using OrderService.Application.Models;
+using OrderService.Application.Models.Address;
 using OrderService.Domain.Models;
-using OrderService.Domain.Models.Extensions;
 using OrderService.Infrastructure.Entities;
 using OrderService.Infrastructure.Mappers.Mappers;
 using OrderService.Infrastructure.Persistence;
@@ -12,7 +11,15 @@ namespace OrderService.Infrastructure.Repositories;
 public class AddressRepository(OrderDbContext orderDbContext) : IAddressRepository
 {
     // Assumptions is that every address is unique
-    public async Task<IReadOnlyCollection<Address>> GetAddressesAsync(AddressSearchRequestModel request,
+    public async Task<Address?> GetByIdAsync(Guid addressId, CancellationToken cancellationToken)
+    {
+        return await orderDbContext.Addresses
+            .Where(address => address.Id == addressId)
+            .Select(entity => entity.ToDomainModel())
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyCollection<Address>> GetAsync(AddressSearchRequestModel request,
         CancellationToken cancellationToken)
     {
         return await orderDbContext.Addresses
@@ -31,7 +38,7 @@ public class AddressRepository(OrderDbContext orderDbContext) : IAddressReposito
             .ToListAsync<Address>(cancellationToken);
     }
 
-    public async Task<int> GetAddressesCountAsync(AddressSearchRequestModel request, CancellationToken cancellationToken)
+    public async Task<int> GetCountAsync(AddressSearchRequestModel request, CancellationToken cancellationToken)
     {
         return await orderDbContext.Addresses
             .AsNoTracking()
@@ -47,10 +54,25 @@ public class AddressRepository(OrderDbContext orderDbContext) : IAddressReposito
             ).CountAsync(cancellationToken);
     }
 
-    public async Task CreateAddressAsync(Address address, CancellationToken cancellationToken)
+    public async Task CreateAsync(Address address, CancellationToken cancellationToken)
     {
         // Move validation here or keep in handlers?
         AddressEntity entity = address.ToEntity();
         await orderDbContext.Addresses.AddAsync(entity, cancellationToken);
+    }
+
+    public async Task UpdateAsync(AddressUpdateRequestModel addressUpdateRequestModel, CancellationToken cancellationToken)
+    {
+        AddressEntity? addressEntity = await orderDbContext.Addresses
+            .Where(address => address.Id == addressUpdateRequestModel.AddressId)
+            .FirstOrDefaultAsync(cancellationToken);
+        addressEntity?.Country = addressUpdateRequestModel.Country ?? addressEntity.Country;
+        addressEntity?.Region = addressUpdateRequestModel.Region ?? addressEntity.Region;
+        addressEntity?.City = addressUpdateRequestModel.City ?? addressEntity.City;
+        addressEntity?.Street = addressUpdateRequestModel.Street ?? addressEntity.Street;
+        addressEntity?.Apartment = addressUpdateRequestModel.Apartment ?? addressEntity.Apartment;
+        addressEntity?.PostalCode = addressUpdateRequestModel.PostalCode ?? addressEntity.PostalCode;
+        addressEntity?.Longitude = addressUpdateRequestModel.Longitude ?? addressEntity.Longitude;
+        addressEntity?.Latitude = addressUpdateRequestModel.Latitude ?? addressEntity.Latitude;
     }
 }

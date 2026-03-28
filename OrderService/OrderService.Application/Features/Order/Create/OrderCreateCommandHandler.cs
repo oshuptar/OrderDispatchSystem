@@ -15,14 +15,14 @@ public class OrderCreateCommandHandler(
     public async Task<OrderCreateResponse> HandleCommandAsync(OrderCreateRequest command, CancellationToken cancellationToken)
     {
         if(DateTime.UtcNow > command.RequestedDeliveryDateTime)
-            throw new InvalidOperationException("The scheduled order date cannot be in the future");
+            throw new InvalidOperationException("The scheduled order date must be in the future");
         if(command.Volume <= 0)
             throw new InvalidOperationException("Volume cannot be zero or negative");
         if(command.Weight <= 0)
             throw new InvalidOperationException("Weight cannot be zero or negative");
         
         Domain.Models.Order order = command.ToDomainModel();
-        await orderRepository.CreateOrderAsync(order, cancellationToken);
+        await orderRepository.CreateAsync(order, cancellationToken);
         await orderDeliveryCreateCommandHandler.HandleCommandAsync(
             new OrderDeliveryCreateRequest(order.Id,
                 order.RequestedDeliveryDateTime,

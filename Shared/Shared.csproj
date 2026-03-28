@@ -8,6 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Reference Include="Confluent.Kafka">
+        <HintPath>..\..\..\.nuget\packages\confluent.kafka\2.13.2\lib\net8.0\Confluent.Kafka.dll</HintPath>
+      </Reference>
       <Reference Include="Microsoft.AspNetCore.Authentication.JwtBearer">
         <HintPath>..\..\..\.nuget\packages\microsoft.aspnetcore.authentication.jwtbearer\10.0.2\lib\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll</HintPath>
       </Reference>
@@ -25,6 +28,10 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Exceptions\Order\" />
     </ItemGroup>
 
 </Project>

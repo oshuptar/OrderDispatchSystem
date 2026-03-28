@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using OrderService.Application.Models;
+using OrderService.Application.Models.User;
 
 namespace OrderService.Application.Context;
 

@@ -1,7 +1,7 @@
 using Auth.Mediator.Interfaces;
 using OrderService.Application.Abstractions.Repositories;
 using OrderService.Application.Features.Address.Get.Contracts;
-using OrderService.Application.Models;
+using OrderService.Application.Models.Address;
 
 namespace OrderService.Application.Features.Address.Get;
 
@@ -14,8 +14,8 @@ public class AddressSearchByQueryHandler(
         // TODO: Validate and normalise before comparison
         var requestModel = new AddressSearchRequestModel(command.Country,command.Region,command.City, command.Street,
             command.Apartment,command.PostalCode, command.Longitude, command.Latitude, command.Page, command.Size);
-        int totalCount = await addressRepository.GetAddressesCountAsync(requestModel, cancellationToken);
-        IReadOnlyCollection<Domain.Models.Address> res = await addressRepository.GetAddressesAsync(
+        int totalCount = await addressRepository.GetCountAsync(requestModel, cancellationToken);
+        IReadOnlyCollection<Domain.Models.Address> res = await addressRepository.GetAsync(
             requestModel,
             cancellationToken);
         return new AddressSearchResponse(res, totalCount);
