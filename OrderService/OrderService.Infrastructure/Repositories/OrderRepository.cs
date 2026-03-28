@@ -1,8 +1,5 @@
-using Auth.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Application.Abstractions.Repositories;
-using OrderService.Application.Features.Order.Update.Contracts;
-using OrderService.Application.Models;
 using OrderService.Application.Models.Order;
 using OrderService.Domain.Models;
 using OrderService.Infrastructure.Entities;
@@ -42,6 +39,31 @@ public class OrderRepository(OrderDbContext orderDbContext) : IOrderRepository
         order?.Weight = orderUpdateRequestModel.Weight ?? order.Weight;
         order?.RequestedDeliveryDateTime = orderUpdateRequestModel.RequestedDeliveryDateTime ?? order.RequestedDeliveryDateTime;
     }
+
+    public async Task<int> GetCountAsync(OrderSearchRequestModel searchRequestModel, CancellationToken cancellationToken)
+    {
+        return await orderDbContext.Orders
+            .Where(order => searchRequestModel.OrderStatus == null || (order.OrderStatus == searchRequestModel.OrderStatus))
+            .Where(order => searchRequestModel.ProductionPlantId == null || (order.ProductionPlantId == searchRequestModel.ProductionPlantId))
+            .Where(order => searchRequestModel.UserId == null || (order.UserId == searchRequestModel.UserId))
+            .Where(order => searchRequestModel.StartDeliveryDateTime == null || (order.RequestedDeliveryDateTime >= searchRequestModel.StartDeliveryDateTime))
+            .Where(order => searchRequestModel.EndDeliveryDateTime == null || (order.RequestedDeliveryDateTime <= searchRequestModel.EndDeliveryDateTime))
+            .CountAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Order>> GetAsync(OrderSearchRequestModel searchRequestModel, int page, int size, CancellationToken cancellationToken)
+    {
+        return await orderDbContext.Orders
+            .Where(order => searchRequestModel.OrderStatus == null || (order.OrderStatus == searchRequestModel.OrderStatus))
+            .Where(order => searchRequestModel.ProductionPlantId == null || (order.ProductionPlantId == searchRequestModel.ProductionPlantId))
+            .Where(order => searchRequestModel.UserId == null || (order.UserId == searchRequestModel.UserId))
+            .Where(order => searchRequestModel.StartDeliveryDateTime == null || (order.RequestedDeliveryDateTime >= searchRequestModel.StartDeliveryDateTime))
+            .Where(order => searchRequestModel.EndDeliveryDateTime == null || (order.RequestedDeliveryDateTime <= searchRequestModel.EndDeliveryDateTime))
+            .Skip(page*size)
+            .Take(size)
+            .Select(order => order.ToDomainModel())
+            .ToListAsync(cancellationToken);
+    }   
 
     private async Task<OrderEntity?> GetOrderEntityById(Guid orderId, CancellationToken cancellationToken)
     {

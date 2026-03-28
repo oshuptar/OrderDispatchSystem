@@ -21,8 +21,8 @@ public class UserSearchByQueryHandler(
         
         // TODO: wrap in transaction?
         // TODO: change to model in GetUsersCountAsync
-        int totalCount = await userRepository.GetUsersCountAsync(command, cancellationToken);
-        IReadOnlyCollection<User> res = await userRepository.GetUsersAsync(
+        int totalCount = await userRepository.GetCountAsync(command, cancellationToken);
+        IReadOnlyCollection<User> res = await userRepository.GetAsync(
             new UserSearchRequestModel(command.Email, command.Role, command.Page, command.Size),
             cancellationToken);
         return new UserSearchResponse(res.ToUserModelList(), totalCount);

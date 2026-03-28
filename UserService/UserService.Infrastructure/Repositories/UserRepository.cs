@@ -11,13 +11,13 @@ public class UserRepository(
     UserDbContext userDbContext
     ) : IUserRepository
 {
-    public async Task<User?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         return await userDbContext.Users.Include(user => user.UserProfile)
             .FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
     }
 
-    public async Task<IReadOnlyList<User>> GetUsersAsync(UserSearchRequestModel searchRequest, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<User>> GetAsync(UserSearchRequestModel searchRequest, CancellationToken cancellationToken)
     {
         return await userDbContext.Users
             .Join(userDbContext.UserRoles,
@@ -44,7 +44,7 @@ public class UserRepository(
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<int> GetUsersCountAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken)
+    public async Task<int> GetCountAsync(UserSearchRequest searchRequest, CancellationToken cancellationToken)
     {
         return await userDbContext.Users
             .Join(userDbContext.UserRoles,

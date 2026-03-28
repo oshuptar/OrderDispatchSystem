@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OrderService.Application.Features.Admin.OrderAssignProductionPlantCommandHandler.Contracts;
 using OrderService.Application.Features.Admin.OrderFinalizeVerification.Contracts;
 using OrderService.Application.Features.Admin.OrderStartVerification.Contracts;
+using OrderService.Application.Features.Order.Get.Contracts;
 using OrderService.Application.Features.OrderPlatform.PostOrder.Contracts;
 using OrderService.Application.Features.OrderPlatform.UpdateOrder.Contracts;
 using OrderService.Application.Models.Order.In;
@@ -77,6 +78,17 @@ public static class ApiExtensions
         {
             await mediator.ExecuteCommandAsync<OrderAssignProductionPlantRequest>(new OrderAssignProductionPlantRequest(orderId, requestModel.ProductionPlantId), cancellationToken);
             return Results.Ok();
+        }).RequireAuthorization(builder => builder.RequireRole([Roles.Admin]));
+        
+        // Search orders by parameters
+        app.MapGet(PathResolver.Orders.Base, async (
+            [FromQuery] OrderSearchByRequest queryParams,
+            [FromServices] IMediator mediator,
+            CancellationToken cancellationToken
+            ) =>
+        {
+            var res = await mediator.ExecuteQueryAsync<OrderSearchByRequest, OrderSearchByResponse>(queryParams, cancellationToken);
+            return Results.Ok(res);
         });
         
         return app;
