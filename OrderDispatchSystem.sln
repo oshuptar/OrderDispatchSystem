@@ -29,13 +29,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DriverService", "DriverService", "{419422CC-02CE-4B8F-A364-0551D7FD77DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService.API", "DriverService.API\DriverService.API.csproj", "{C8E2B6DD-B878-4AC8-91CA-904891C02245}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService.API", "DriverService\DriverService.API\DriverService.API.csproj", "{C8E2B6DD-B878-4AC8-91CA-904891C02245}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService.Application", "DriverService.Application\DriverService.Application.csproj", "{D8161FC5-2C6B-4DFD-A2D0-4285C84E3014}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService.Application", "DriverService\DriverService.Application\DriverService.Application.csproj", "{D8161FC5-2C6B-4DFD-A2D0-4285C84E3014}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService.Infrastructure", "DriverService.Infrastructure\DriverService.Infrastructure.csproj", "{07C067D7-7C6D-4EBB-999E-26865650AB92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService.Infrastructure", "DriverService\DriverService.Infrastructure\DriverService.Infrastructure.csproj", "{07C067D7-7C6D-4EBB-999E-26865650AB92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService.Domain", "DriverService.Domain\DriverService.Domain.csproj", "{781421E8-9FCC-4EF3-B4EB-2DA750C26179}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService.Domain", "DriverService\DriverService.Domain\DriverService.Domain.csproj", "{781421E8-9FCC-4EF3-B4EB-2DA750C26179}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
