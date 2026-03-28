@@ -11,6 +11,7 @@ using OrderService.Application.Features.Order.Update.Contracts;
 using OrderService.Application.Features.OrderDelivery.Update.Contracts;
 using OrderService.Application.Features.ProductionPlant.Get.Contracts;
 using OrderService.Application.Models.Outbox;
+using OrderService.Domain.Enums;
 using OrderService.Domain.Models.Enums;
 
 namespace OrderService.Application.Features.Admin.OrderAssignProductionPlantCommandHandler;
@@ -34,6 +35,9 @@ public class OrderAssignProductionPlantCommandHandler(
                 "[{dateTime}]: Assigning production plant with id: {plantId} to order with id: {orderId}",
                 DateTime.UtcNow, command.ProductionPlantId, command.OrderId);
             Domain.Models.Order order = await orderGetByIdQueryHandler.HandleQueryAsync(new OrderGetByIdRequest(command.OrderId), cancellationToken);
+            
+            if(order.OrderStatus <= OrderStatus.Verified)
+                throw new InvalidOperationException($"Order {order.Id} is not yet verified");
             
             // TO change the value of production plant id expose the update order functionality
             if(order.ProductionPlantId.HasValue)
