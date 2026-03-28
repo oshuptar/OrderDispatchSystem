@@ -16,6 +16,7 @@ public class OrderDeliveryRepository(OrderDbContext orderDbContext) : IOrderDeli
         await orderDbContext.OrderDeliveries.AddAsync(entity);
     }
 
+    // TODO: implement
     public Task UpdateAsync(OrderDeliveryUpdateRequestModel request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

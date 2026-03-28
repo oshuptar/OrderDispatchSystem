@@ -58,9 +58,12 @@ public class OrderDeliveryUpdateCommandHandler(
             else
                 orderDelivery.DestinationAddressId = address.Id;
         }
-        await orderDeliveryRepository.UpdateAsync(new OrderDeliveryUpdateRequestModel(
+        await orderDeliveryRepository.UpdateAsync(
+            new OrderDeliveryUpdateRequestModel(
             orderDelivery.Id,
-            DestinationAddressId: orderDelivery.DestinationAddressId
+            orderDelivery.ScheduledDeliveryDateTime,
+            orderDelivery.DestinationAddressId,
+            orderDelivery.OrderDeliveryStatus
             ), cancellationToken);
     }
 }

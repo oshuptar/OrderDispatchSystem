@@ -45,11 +45,12 @@ public class ClientOrderUpdateCommandHandler(
                     RequestedDeliveryDateTime: command.RequestedDeliveryDateTime)
                 , cancellationToken);
 
-            if (command.DestionationAddressUpdateRequest is not null)
+            if (command.DestionationAddressUpdateRequest is not null || command.RequestedDeliveryDateTime is not null)
             {
                 await orderDeliveryUpdateCommandHandler.HandleCommandAsync(
                     new OrderDeliveryUpdateRequest(order.Id,
-                        command.DestionationAddressUpdateRequest), cancellationToken);
+                         command.RequestedDeliveryDateTime,
+                         command.DestionationAddressUpdateRequest), cancellationToken);
             }
             
             // Outbox implementation:

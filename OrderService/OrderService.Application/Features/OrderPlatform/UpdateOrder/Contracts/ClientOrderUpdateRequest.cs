@@ -9,6 +9,5 @@ public record ClientOrderUpdateRequest(
     int? Volume = null,
     int? Weight = null,
     DateTime? RequestedDeliveryDateTime = null,
-    ClientAddressUpdateRequest? DestionationAddressUpdateRequest = null,
-    Guid? ProductionPlantId = null
+    ClientAddressUpdateRequest? DestionationAddressUpdateRequest = null
 );
