@@ -16,10 +16,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Shared.csproj" />
       <ProjectReference Include="..\DriverService.Application\DriverService.Application.csproj" />
       <ProjectReference Include="..\DriverService.Domain\DriverService.Domain.csproj" />
       <ProjectReference Include="..\DriverService.Infrastructure\DriverService.Infrastructure.csproj" />
-      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>
