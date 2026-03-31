@@ -24,8 +24,7 @@ public class OrderRepository(OrderDbContext orderDbContext) : IOrderRepository
 
     public async Task<bool> ExistsByIdAsync(Guid orderId, CancellationToken cancellationToken)
     {
-        return await orderDbContext.Orders
-            .AnyAsync(order => order.Id == orderId, cancellationToken);
+        return await orderDbContext.Orders.AnyAsync(order => order.Id == orderId, cancellationToken);
     }
 
     // Make sure that order exists before retrieving it
@@ -42,24 +41,25 @@ public class OrderRepository(OrderDbContext orderDbContext) : IOrderRepository
 
     public async Task<int> GetCountAsync(OrderSearchRequestModel searchRequestModel, CancellationToken cancellationToken)
     {
-        return await orderDbContext.Orders
-            .Where(order => searchRequestModel.OrderStatus == null || (order.OrderStatus == searchRequestModel.OrderStatus))
-            .Where(order => searchRequestModel.ProductionPlantId == null || (order.ProductionPlantId == searchRequestModel.ProductionPlantId))
-            .Where(order => searchRequestModel.UserId == null || (order.UserId == searchRequestModel.UserId))
-            .Where(order => searchRequestModel.StartDeliveryDateTime == null || (order.RequestedDeliveryDateTime >= searchRequestModel.StartDeliveryDateTime))
-            .Where(order => searchRequestModel.EndDeliveryDateTime == null || (order.RequestedDeliveryDateTime <= searchRequestModel.EndDeliveryDateTime))
-            .CountAsync(cancellationToken);
+        IQueryable<OrderEntity> query = orderDbContext.Orders;
+        if (searchRequestModel.OrderStatus != null) query = query.Where(order => order.OrderStatus == searchRequestModel.OrderStatus);
+        if (searchRequestModel.ProductionPlantId != null) query = query.Where(order => order.ProductionPlantId == searchRequestModel.ProductionPlantId);
+        if (searchRequestModel.UserId != null) query = query.Where(order => order.UserId == searchRequestModel.UserId);
+        if (searchRequestModel.StartDeliveryDateTime != null) query = query.Where(order => order.RequestedDeliveryDateTime >= searchRequestModel.StartDeliveryDateTime);
+        if (searchRequestModel.EndDeliveryDateTime != null) query = query.Where(order => order.RequestedDeliveryDateTime <= searchRequestModel.EndDeliveryDateTime);
+        return await query.CountAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<Order>> GetAsync(OrderSearchRequestModel searchRequestModel, int page, int size, CancellationToken cancellationToken)
     {
-        return await orderDbContext.Orders
-            .Where(order => searchRequestModel.OrderStatus == null || (order.OrderStatus == searchRequestModel.OrderStatus))
-            .Where(order => searchRequestModel.ProductionPlantId == null || (order.ProductionPlantId == searchRequestModel.ProductionPlantId))
-            .Where(order => searchRequestModel.UserId == null || (order.UserId == searchRequestModel.UserId))
-            .Where(order => searchRequestModel.StartDeliveryDateTime == null || (order.RequestedDeliveryDateTime >= searchRequestModel.StartDeliveryDateTime))
-            .Where(order => searchRequestModel.EndDeliveryDateTime == null || (order.RequestedDeliveryDateTime <= searchRequestModel.EndDeliveryDateTime))
-            .Skip(page*size)
+        IQueryable<OrderEntity> query = orderDbContext.Orders;
+        if (searchRequestModel.OrderStatus != null) query = query.Where(order => order.OrderStatus == searchRequestModel.OrderStatus);
+        if (searchRequestModel.ProductionPlantId != null) query = query.Where(order => order.ProductionPlantId == searchRequestModel.ProductionPlantId);
+        if (searchRequestModel.UserId != null) query = query.Where(order => order.UserId == searchRequestModel.UserId);
+        if (searchRequestModel.StartDeliveryDateTime != null) query = query.Where(order => order.RequestedDeliveryDateTime >= searchRequestModel.StartDeliveryDateTime);
+        if (searchRequestModel.EndDeliveryDateTime != null) query = query.Where(order => order.RequestedDeliveryDateTime <= searchRequestModel.EndDeliveryDateTime);
+        return await query
+            .Skip(page * size)
             .Take(size)
             .Select(order => order.ToDomainModel())
             .ToListAsync(cancellationToken);
