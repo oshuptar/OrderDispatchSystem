@@ -16,7 +16,7 @@ public class UserGetByIdQueryHandler(
 {
     public async Task<UserDetailsModel> HandleQueryAsync(UserGetByIdRequest command, CancellationToken cancellationToken)
     {
-        User? user = await userRepository.GetUserByIdAsync(command.Id, cancellationToken);
+        User? user = await userRepository.GetByIdAsync(command.Id, cancellationToken);
         if (user is null) throw new NotFoundException("User with id " + command.Id + " not found");
         var roles = await userManager.GetRolesAsync(user);
         return user.ToUserDetailsModel(new UserModelContext(roles));

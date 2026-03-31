@@ -1,9 +1,8 @@
 using System.Security.Claims;
+using Auth.Context.Models;
 using Microsoft.AspNetCore.Http;
-using OrderService.Application.Models;
-using OrderService.Application.Models.User;
 
-namespace OrderService.Application.Context;
+namespace Auth.Context;
 
 public class UserContext(IHttpContextAccessor accessor)
 {

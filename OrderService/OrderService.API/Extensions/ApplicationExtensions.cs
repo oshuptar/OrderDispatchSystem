@@ -1,8 +1,8 @@
 using Auth.Abstractions.Persistence;
+using Auth.Context;
 using Auth.Mediator;
 using Auth.Mediator.Interfaces;
 using Auth.Persistence.UnitOfWork;
-using OrderService.Application.Context;
 using OrderService.Application.Features.Order.Create;
 using OrderService.Application.Workers;
 using OrderService.Infrastructure.Persistence;

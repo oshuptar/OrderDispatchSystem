@@ -16,9 +16,21 @@ public class OrderDeliveryRepository(OrderDbContext orderDbContext) : IOrderDeli
         await orderDbContext.OrderDeliveries.AddAsync(entity);
     }
 
-    public Task UpdateAsync(OrderDeliveryUpdateRequestModel request, CancellationToken cancellationToken)
+    public async Task UpdateAsync(OrderDeliveryUpdateRequestModel request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var orderDelivery = await orderDbContext.OrderDeliveries
+            .Where(productionPlant => productionPlant.Id == request.OrderDeliveryId)
+            .FirstOrDefaultAsync(cancellationToken);
+        // We assume that in command handler we have already checked that order delivery exists
+        if (orderDelivery is not null)
+        {
+            orderDelivery.SourceAddressId = request.SourceAddressId ?? orderDelivery.SourceAddressId;
+            orderDelivery.DestinationAddressId = request.DestinationAddressId ?? orderDelivery.DestinationAddressId;
+            orderDelivery.OrderDeliveryStatus = request.OrderDeliveryStatus ?? orderDelivery.OrderDeliveryStatus;
+            orderDelivery.ScheduledDeliveryDateTime =
+                request.RequestedDeliveryDateTime ?? orderDelivery.ScheduledDeliveryDateTime;
+            await orderDbContext.SaveChangesAsync(cancellationToken);
+        }
     }
 
     public async Task<OrderDelivery?> GetByOrderIdAsync(Guid orderId, CancellationToken cancellationToken)
