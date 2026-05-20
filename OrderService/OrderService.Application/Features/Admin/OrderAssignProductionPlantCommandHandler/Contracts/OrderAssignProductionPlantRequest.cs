@@ -1,0 +1,3 @@
+namespace OrderService.Application.Features.Admin.OrderAssignProductionPlantCommandHandler.Contracts;
+
+public record OrderAssignProductionPlantRequest(Guid OrderId, Guid ProductionPlantId);

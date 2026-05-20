@@ -1,0 +1,12 @@
+namespace OrderService.Application.Features.OrderPlatform.UpdateOrder.Contracts;
+
+public record ClientAddressUpdateRequest(
+    string? Country = null,
+    string? Region = null,
+    string? City = null,
+    string? Street = null,
+    string? Apartment = null,
+    string? PostalCode = null,
+    string? Longitude = null,
+    string? Latitude = null
+    );
