@@ -1,6 +1,8 @@
 using Auth.Extensions;
+using Microsoft.EntityFrameworkCore;
 using UserService;
 using UserService.Extensions;
+using UserService.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,11 @@ var app = builder.Build();
 
 // Used for seeding data
 using (var scope = app.Services.CreateScope()){
+    if (app.Environment.IsDevelopment())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+        await dbContext.Database.MigrateAsync();
+    }
     await DataSeeder.SeedAsync(scope.ServiceProvider, builder.Configuration);
 }
 app.AddMiddleware();

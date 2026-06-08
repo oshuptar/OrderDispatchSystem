@@ -1,0 +1,49 @@
+name: order-dispatch-system
+
+services:
+  gateway:
+    image: nginx:1.31
+    volumes:
+      - ./Gateway/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - '8080:80'
+    depends_on:
+      - user-service
+  
+  user-db:
+    image: postgres:18.4-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${USERDB_POSTGRES_PASSWORD}
+    volumes:
+      - user-data:/var/lib/postgresql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d user_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  
+  user-service:
+    build:
+      dockerfile: ./UserService/Dockerfile
+      context: ./
+    depends_on:
+      user-db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__UserDb: ${UserDbConnectionString}
+      Jwt__Issuer: ${JwtIssuer}
+      Jwt__Audience: ${JwtAudience}
+      Jwt__Key: ${JwtKey}
+    expose:
+      - '8080'
+    
+volumes:
+  user-data:
+  driver-data:
+  order-data:
+  kafka-data:
