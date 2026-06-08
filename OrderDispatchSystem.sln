@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Infrastructure", "UserService\UserService.Infrastructure\UserService.Infrastructure.csproj", "{4E1F9029-3FED-40A4-AC79-DCB21DD2DEC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrderService", "OrderService", "{E062B389-F9D7-4BCE-9B87-8EFF05D5DB7C}"
+	ProjectSection(SolutionItems) = preProject
+		OrderService\Dockerfile = OrderService\Dockerfile
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService.API", "OrderService\OrderService.API\OrderService.API.csproj", "{627AA5DC-5FD1-4F6A-806A-1DA36236194E}"
 EndProject
