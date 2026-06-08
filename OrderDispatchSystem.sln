@@ -28,6 +28,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{240A0930-9587-40F1-9016-99C564B7D3C2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DriverService", "DriverService", "{419422CC-02CE-4B8F-A364-0551D7FD77DA}"
+	ProjectSection(SolutionItems) = preProject
+		DriverService\Dockerfile = DriverService\Dockerfile
+		DriverService\.dockerignore = DriverService\.dockerignore
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService.API", "DriverService\DriverService.API\DriverService.API.csproj", "{C8E2B6DD-B878-4AC8-91CA-904891C02245}"
 EndProject
